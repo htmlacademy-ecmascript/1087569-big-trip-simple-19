@@ -1,7 +1,7 @@
 # Проект «Большое путешествие (простой)»
 
 * Студент: [Дмитрий Носков](https://up.htmlacademy.ru/ecmascript/19/user/1087569).
-* Наставник: `Неизвестно`.
+* Наставник: `Alexey Koryakin`(https://htmlacademy.ru/profile/alexeycorr).
 
 ---
 
