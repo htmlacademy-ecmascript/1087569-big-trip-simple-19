@@ -1,15 +1,15 @@
 import {createElement} from '../render.js';
 
-function createBoardTemplate () {
+const createBoardTemplate = function() {
   return '<ul class="trip-events__list"></ul>';
-}
+};
 
 export default class BoardView {
-  getTemplate () {
+  getTemplate() {
     return createBoardTemplate();
   }
 
-  getElement () {
+  getElement() {
     if (!this.element) {
       this.element = createElement(this.getTemplate());
     }
@@ -17,7 +17,7 @@ export default class BoardView {
     return this.element;
   }
 
-  removeElement () {
+  removeElement() {
     this.element = null;
   }
 }
