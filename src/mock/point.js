@@ -50,4 +50,9 @@ const point = {
   type: TYPES_POINT[0]
 };
 
+function getPoint() {
+  return point;
+}
+
+export { getPoint };
 
