@@ -6,17 +6,20 @@ import PointView from '../view/point-view.js';
 export default class BoardPresenter {
   boardComponent = new BoardView();
 
-  constructor({boardContainer}) {
+  constructor({boardContainer, pointsModel}) {
     this.boardContainer = boardContainer;
+    this.pointsModel = pointsModel;
   }
 
   init() {
-    render(this.boardComponent, this.boardContainer);
-    render(new EditFormView(true), this.boardComponent.getElement());
-    render(new EditFormView(false), this.boardComponent.getElement());
+    this.boardPoints = [...this.pointsModel.getPoints()];
 
-    for (let i = 0; i < 3; i++) {
-      render(new PointView(), this.boardComponent.getElement());
+    render(this.boardComponent, this.boardContainer);
+    render(new EditFormView({point: this.boardPoints[0]}, true), this.boardComponent.getElement());
+    render(new EditFormView({point: this.boardPoints[0]}, false), this.boardComponent.getElement());
+
+    for (let i = 0; i < this.boardPoints.length; i++) {
+      render(new PointView({point: this.boardPoints[i]}), this.boardComponent.getElement());
     }
   }
 }

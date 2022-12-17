@@ -161,8 +161,9 @@ const createEditFormTemplate = function(showButton) {
 };
 
 export default class EditFormView {
-  constructor(showButton = true) {
+  constructor(point,showButton) {
     this.showButton = showButton;
+    this.point = point;
   }
 
   getTemplate() {
