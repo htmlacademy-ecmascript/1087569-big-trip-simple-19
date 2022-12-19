@@ -17,12 +17,17 @@ const offers = [
     title: 'Buy something',
     price: 500
   },
+  {
+    id: 4,
+    title: 'Add baggage',
+    price: 10
+  }
 ];
 
 const offersByType = [
   {
     type: 'taxi',
-    offers: offers[0]
+    offers: [1, 4]
   }
 ];
 
@@ -35,6 +40,22 @@ const destinations = [
       {
         src: `https://loremflickr.com/248/152?random=${getRandomArrayElement(RANDOM_NUMBERS)}`,
         description: 'Chamonix parliament building'
+      },
+      {
+        src: `https://loremflickr.com/248/152?random=${getRandomArrayElement(RANDOM_NUMBERS)}`,
+        description: 'Chamonix parliament building'
+      },
+      {
+        src: `https://loremflickr.com/248/152?random=${getRandomArrayElement(RANDOM_NUMBERS)}`,
+        description: 'Chamonix parliament building'
+      },
+      {
+        src: `https://loremflickr.com/248/152?random=${getRandomArrayElement(RANDOM_NUMBERS)}`,
+        description: 'Chamonix parliament building'
+      },
+      {
+        src: `https://loremflickr.com/248/152?random=${getRandomArrayElement(RANDOM_NUMBERS)}`,
+        description: 'Chamonix parliament building'
       }
     ]
   }
@@ -44,9 +65,9 @@ const point = {
   basePrice: 1100,
   dateFrom: '2019-07-10T22:55:56.845Z',
   dateTo: '2019-07-11T11:22:13.375Z',
-  destination: destinations[0].description,
+  destination: destinations[0],
   id: 0,
-  offers: offersByType.find((offer) => offer.type === point.type).offers,
+  offers: offers.filter((offer) => offersByType.find((item) => item.type === TYPES_POINT[0]).offers.includes(offer.id)),
   type: TYPES_POINT[0]
 };
 
