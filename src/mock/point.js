@@ -1,5 +1,14 @@
 import {getRandomArrayElement} from '../utils.js';
-import {TYPES_POINT, DESCRPTIONS_DESTINATION, CITIES, RANDOM_NUMBERS} from '../const.js';
+
+const TYPES_POINT = ['taxi', 'bus', 'train', 'ship', 'drive', 'flight', 'check-in', 'sightseeing', 'restaurant'];
+const DESCRPTIONS_DESTINATION = [
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Cras aliquet varius magna, non porta ligula feugiat eget.',
+  'Fusce tristique felis at fermentum pharetra.',
+  'Aliquam id orci ut lectus varius viverra.'
+];
+const CITIES = ['London', 'Paris', 'Madrid', 'Rome'];
+const ARRAY_NUMBERS = Array.from({length:10}, (_, i) => ++i);
 
 const offers = [
   {
@@ -38,23 +47,23 @@ const destinations = [
     name: getRandomArrayElement(CITIES),
     pictures: [
       {
-        src: `https://loremflickr.com/248/152?random=${getRandomArrayElement(RANDOM_NUMBERS)}`,
+        src: `https://loremflickr.com/248/152?random=${getRandomArrayElement(ARRAY_NUMBERS)}`,
         description: 'Chamonix parliament building'
       },
       {
-        src: `https://loremflickr.com/248/152?random=${getRandomArrayElement(RANDOM_NUMBERS)}`,
+        src: `https://loremflickr.com/248/152?random=${getRandomArrayElement(ARRAY_NUMBERS)}`,
         description: 'Chamonix parliament building'
       },
       {
-        src: `https://loremflickr.com/248/152?random=${getRandomArrayElement(RANDOM_NUMBERS)}`,
+        src: `https://loremflickr.com/248/152?random=${getRandomArrayElement(ARRAY_NUMBERS)}`,
         description: 'Chamonix parliament building'
       },
       {
-        src: `https://loremflickr.com/248/152?random=${getRandomArrayElement(RANDOM_NUMBERS)}`,
+        src: `https://loremflickr.com/248/152?random=${getRandomArrayElement(ARRAY_NUMBERS)}`,
         description: 'Chamonix parliament building'
       },
       {
-        src: `https://loremflickr.com/248/152?random=${getRandomArrayElement(RANDOM_NUMBERS)}`,
+        src: `https://loremflickr.com/248/152?random=${getRandomArrayElement(ARRAY_NUMBERS)}`,
         description: 'Chamonix parliament building'
       }
     ]
@@ -75,5 +84,5 @@ function getPoint() {
   return point;
 }
 
-export { getPoint };
+export { getPoint, TYPES_POINT };
 
