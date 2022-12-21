@@ -18,11 +18,46 @@ export default class BoardPresenter {
     this.#boardPoints = [...this.#pointsModel.points];
 
     render(this.#boardComponent, this.#boardContainer);
-    render(new EditFormView({point: this.#boardPoints[0]}, true), this.#boardComponent.element);
-    render(new EditFormView({point: this.#boardPoints[0]}, false), this.#boardComponent.element);
-
     for (let i = 0; i < this.#boardPoints.length; i++) {
-      render(new PointView({point: this.#boardPoints[i]}), this.#boardComponent.element);
+      this.#renderPoint(this.#boardPoints[i]);
     }
+  }
+
+  #renderPoint (point) {
+    const pointComponent = new PointView({point});
+    const editPointComponent = new EditFormView({point}, true);
+
+    const replacePointToForm = () => {
+      this.#boardComponent.element.replaceChild(editPointComponent.element, pointComponent.element);
+    };
+
+    const replaceFormToPoint = () => {
+      this.#boardComponent.element.replaceChild(pointComponent.element, editPointComponent.element);
+    };
+
+    const escKeyDownHandler = (evt) => {
+      if (evt.key === 'Escape' || evt.key === 'Esc') {
+        evt.preventDefault();
+        replaceFormToPoint();
+        document.removeEventListener('keydown', escKeyDownHandler);
+      }
+    };
+
+    pointComponent.element.querySelector('.event__rollup-btn').addEventListener('click', () => {
+      replacePointToForm();
+      document.addEventListener('keydown', escKeyDownHandler);
+    });
+
+    editPointComponent.element.querySelector('form').addEventListener('submit', (evt) => {
+      evt.preventDefault();
+      replaceFormToPoint();
+      document.removeEventListener('keydown', escKeyDownHandler);
+    });
+
+    editPointComponent.element.querySelector('.event__rollup-btn').addEventListener('click', () => {
+      replaceFormToPoint();
+    });
+
+    render(pointComponent, this.#boardComponent.element);
   }
 }
