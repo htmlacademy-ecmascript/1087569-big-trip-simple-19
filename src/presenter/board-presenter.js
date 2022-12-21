@@ -56,6 +56,7 @@ export default class BoardPresenter {
 
     editPointComponent.element.querySelector('.event__rollup-btn').addEventListener('click', () => {
       replaceFormToPoint();
+      document.removeEventListener('keydown', escKeyDownHandler);
     });
 
     render(pointComponent, this.#boardComponent.element);
