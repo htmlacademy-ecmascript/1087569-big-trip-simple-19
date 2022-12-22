@@ -16,19 +16,20 @@ export default class BoardPresenter {
   }
 
   init() {
-    this.#boardPoints = [...this.#pointsModel.points];
+    this.#boardPoints = [];
     this.#renderBoard();
   }
 
   #renderBoard() {
     render(this.#boardComponent, this.#boardContainer);
 
-    if (this.#boardPoints.every((point) => point.id)) {
+    if (!this.#boardPoints.length) {
       render(new ListEmptyView, this.#boardComponent.element);
-    } else {
-      for (let i = 0; i < this.#boardPoints.length; i++) {
-        this.#renderPoint(this.#boardPoints[i]);
-      }
+      return;
+    }
+
+    for (let i = 0; i < this.#boardPoints.length; i++) {
+      this.#renderPoint(this.#boardPoints[i]);
     }
   }
 
