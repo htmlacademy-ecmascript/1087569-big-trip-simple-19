@@ -17,6 +17,10 @@ export default class BoardPresenter {
 
   init() {
     this.#boardPoints = [...this.#pointsModel.points];
+    this.#renderBoard();
+  }
+
+  #renderBoard() {
     render(this.#boardComponent, this.#boardContainer);
 
     if (this.#boardPoints.every((point) => point.id)) {
