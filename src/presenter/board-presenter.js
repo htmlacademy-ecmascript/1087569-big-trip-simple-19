@@ -2,6 +2,7 @@ import {render} from '../render.js';
 import BoardView from '../view/board-view.js';
 import EditFormView from '../view/edit-form-view.js';
 import PointView from '../view/point-view.js';
+import ListEmptyView from '../view/list-empty-view.js';
 
 export default class BoardPresenter {
   #boardContainer = null;
@@ -16,8 +17,17 @@ export default class BoardPresenter {
 
   init() {
     this.#boardPoints = [...this.#pointsModel.points];
+    this.#renderBoard();
+  }
 
+  #renderBoard() {
     render(this.#boardComponent, this.#boardContainer);
+
+    if (!this.#boardPoints.length) {
+      render(new ListEmptyView, this.#boardComponent.element);
+      return;
+    }
+
     for (let i = 0; i < this.#boardPoints.length; i++) {
       this.#renderPoint(this.#boardPoints[i]);
     }
