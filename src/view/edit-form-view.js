@@ -1,4 +1,4 @@
-import {createElement} from '../render.js';
+import AbstractView from '../framework/view/abstract-view.js';
 import {formatDateForm} from '../utils.js';
 import {TYPES_POINT} from '../mock/point.js';
 
@@ -151,12 +151,12 @@ const createEditFormTemplate = (point = BLANK_FORM, showButton) => {
   );
 };
 
-export default class EditFormView {
-  #element = null;
+export default class EditFormView extends AbstractView {
   #point = null;
   #showButton = null;
 
   constructor({point}, showButton) {
+    super();
     this.#showButton = showButton;
     this.#point = point;
   }
@@ -164,17 +164,4 @@ export default class EditFormView {
   get template() {
     return createEditFormTemplate(this.#point, this.#showButton);
   }
-
-  get element() {
-    if (!this.#element) {
-      this.#element = createElement(this.template);
-    }
-
-    return this.#element;
-  }
-
-  removeElement() {
-    this.#element = null;
-  }
-
 }
