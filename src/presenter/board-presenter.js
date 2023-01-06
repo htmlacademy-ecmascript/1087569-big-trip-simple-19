@@ -34,40 +34,42 @@ export default class BoardPresenter {
   }
 
   #renderPoint (point) {
-    const pointComponent = new PointView({point});
-    const editPointComponent = new EditFormView({point}, true);
-
-    const replacePointToForm = () => {
-      this.#boardComponent.element.replaceChild(editPointComponent.element, pointComponent.element);
-    };
-
-    const replaceFormToPoint = () => {
-      this.#boardComponent.element.replaceChild(pointComponent.element, editPointComponent.element);
-    };
-
     const escKeyDownHandler = (evt) => {
       if (evt.key === 'Escape' || evt.key === 'Esc') {
         evt.preventDefault();
-        replaceFormToPoint();
+        replaceFormToPoint.call(this);
         document.removeEventListener('keydown', escKeyDownHandler);
       }
     };
 
-    pointComponent.element.querySelector('.event__rollup-btn').addEventListener('click', () => {
-      replacePointToForm();
-      document.addEventListener('keydown', escKeyDownHandler);
+    const pointComponent = new PointView({
+      point,
+      onEditClick: () => {
+        replacePointToForm.call(this);
+        document.addEventListener('keydown', escKeyDownHandler);
+      }
     });
 
-    editPointComponent.element.querySelector('form').addEventListener('submit', (evt) => {
-      evt.preventDefault();
-      replaceFormToPoint();
-      document.removeEventListener('keydown', escKeyDownHandler);
-    });
+    const editPointComponent = new EditFormView({
+      point,
+      onFormSubmit: () => {
+        replaceFormToPoint.call(this);
+        document.removeEventListener('keydown', escKeyDownHandler);
+      },
+      onFormButtonClick: () => {
+        replaceFormToPoint.call(this);
+        document.removeEventListener('keydown', escKeyDownHandler);
+      }
+    },
+    true);
 
-    editPointComponent.element.querySelector('.event__rollup-btn').addEventListener('click', () => {
-      replaceFormToPoint();
-      document.removeEventListener('keydown', escKeyDownHandler);
-    });
+    function replacePointToForm() {
+      this.#boardComponent.element.replaceChild(editPointComponent.element, pointComponent.element);
+    }
+
+    function replaceFormToPoint() {
+      this.#boardComponent.element.replaceChild(pointComponent.element, editPointComponent.element);
+    }
 
     render(pointComponent, this.#boardComponent.element);
   }
