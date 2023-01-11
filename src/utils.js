@@ -4,7 +4,7 @@ import { FilterType } from './consts.js';
 const DATE_POINT_FORMAT = 'MMM DD';
 const TIME_POINT_FORMAT = 'HH:mm';
 const DATE_FORM_FORMAT = 'DD/MM/YY HH:mm';
-const DATE_FILTER_FORMAT = 'DMYYYY';
+const DATE_FILTER_FORMAT = 'YYYYMD';
 
 
 const getRandomNumber = (min, max) => {
@@ -26,10 +26,9 @@ const formatDateFilter = (datePoint) => datePoint ? dayjs(datePoint).format(DATE
 const today = formatDateFilter(dayjs());
 
 const filter = {
-  [FilterType.EVERYTHING]: () => true,
-  [FilterType.FUTURE]: (points) => points.filter((point) =>
-    (formatDateFilter(point.dateFrom) >= today ||
-     formatDateFilter(point.dateFrom) < today && formatDateFilter(point.dateTo) > today)
+  [FilterType.EVERYTHING]: (points) => points.filter(() => true),
+  [FilterType.FUTURE]: (points) => points.filter((point) => formatDateFilter(point.dateFrom) >= today ||
+    (formatDateFilter(point.dateFrom) < today && formatDateFilter(point.dateTo) > today)
   )
 };
 
