@@ -26,7 +26,7 @@ const formatDateFilter = (datePoint) => datePoint ? dayjs(datePoint).format(DATE
 const today = formatDateFilter(dayjs());
 
 const filter = {
-  [FilterType.EVERYTHING]: (points) => points.filter(() => true),
+  [FilterType.EVERYTHING]: (points) => points,
   [FilterType.FUTURE]: (points) => points.filter((point) => formatDateFilter(point.dateFrom) >= today ||
     (formatDateFilter(point.dateFrom) < today && formatDateFilter(point.dateTo) > today)
   )

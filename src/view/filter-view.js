@@ -9,7 +9,7 @@ const createFilterItemTemplate = (filter, isChecked) => {
       type="radio" name="trip-filter" value="${name}"
       ${isChecked ? 'checked' : ''}
       ${count === 0 ? 'disabled' : ''}>
-    <label class="trip-filters__filter-label" for="filter-everything">Everything</label>
+    <label class="trip-filters__filter-label" for="filter-${name}">${name}</label>
   </div>
   `);
 };
