@@ -27,9 +27,14 @@ const today = formatDateFilter(dayjs());
 
 const filter = {
   [FilterType.EVERYTHING]: (points) => points,
-  [FilterType.FUTURE]: (points) => points.filter((point) => formatDateFilter(point.dateFrom) >= today ||
-    (formatDateFilter(point.dateFrom) < today && formatDateFilter(point.dateTo) > today)
+  [FilterType.FUTURE]: (points) => points.filter((point) => formatDateFilter(point.dateFrom) >= today
   )
 };
 
-export {getRandomArrayElement, formatDatePoint, formatTimePoint, formatDateForm, filter};
+const generateFilters = () => Object.entries(filter).map(
+  ([filterName]) => ({
+    name: filterName
+  })
+);
+
+export {getRandomArrayElement, formatDatePoint, formatTimePoint, formatDateForm, generateFilters};
