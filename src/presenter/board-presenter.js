@@ -3,6 +3,7 @@ import BoardView from '../view/board-view.js';
 import EditFormView from '../view/edit-form-view.js';
 import PointView from '../view/point-view.js';
 import ListEmptyView from '../view/list-empty-view.js';
+import {Keys} from '../consts.js';
 
 export default class BoardPresenter {
   #boardContainer = null;
@@ -35,7 +36,7 @@ export default class BoardPresenter {
 
   #renderPoint (point) {
     const escKeyDownHandler = (evt) => {
-      if (evt.key === 'Escape' || evt.key === 'Esc') {
+      if (evt.key === Keys.ESCAPE || evt.key === Keys.ESC) {
         evt.preventDefault();
         replaceFormToPoint.call(this);
         document.removeEventListener('keydown', escKeyDownHandler);
