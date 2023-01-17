@@ -1,10 +1,8 @@
 import {render, RenderPosition} from '../framework/render.js';
 import BoardView from '../view/board-view.js';
-import EditFormView from '../view/edit-form-view.js';
-import PointView from '../view/point-view.js';
 import ListEmptyView from '../view/list-empty-view.js';
 import SortView from '../view/sort-view.js';
-import {Keys} from '../consts.js';
+import PointPresenter from './point-presenter.js';
 
 export default class BoardPresenter {
   #boardContainer = null;
@@ -48,43 +46,10 @@ export default class BoardPresenter {
   }
 
   #renderPoint (point) {
-    const escKeyDownHandler = (evt) => {
-      if (evt.key === Keys.ESCAPE || evt.key === Keys.ESC) {
-        evt.preventDefault();
-        replaceFormToPoint.call(this);
-        document.removeEventListener('keydown', escKeyDownHandler);
-      }
-    };
-
-    const pointComponent = new PointView({
-      point,
-      onEditClick: () => {
-        replacePointToForm.call(this);
-        document.addEventListener('keydown', escKeyDownHandler);
-      }
+    const pointPresenter = new PointPresenter({
+      pointsListContainer: this.#boardComponent.element
     });
 
-    const editPointComponent = new EditFormView({
-      point,
-      onFormSubmit: () => {
-        replaceFormToPoint.call(this);
-        document.removeEventListener('keydown', escKeyDownHandler);
-      },
-      onFormButtonClick: () => {
-        replaceFormToPoint.call(this);
-        document.removeEventListener('keydown', escKeyDownHandler);
-      }
-    },
-    true);
-
-    function replacePointToForm() {
-      this.#boardComponent.element.replaceChild(editPointComponent.element, pointComponent.element);
-    }
-
-    function replaceFormToPoint() {
-      this.#boardComponent.element.replaceChild(pointComponent.element, editPointComponent.element);
-    }
-
-    render(pointComponent, this.#boardComponent.element);
+    pointPresenter.init(point);
   }
 }
