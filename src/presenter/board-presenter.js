@@ -1,14 +1,17 @@
-import {render} from '../framework/render.js';
+import {render, RenderPosition} from '../framework/render.js';
 import BoardView from '../view/board-view.js';
 import EditFormView from '../view/edit-form-view.js';
 import PointView from '../view/point-view.js';
 import ListEmptyView from '../view/list-empty-view.js';
+import SortView from '../view/sort-view.js';
 import {Keys} from '../consts.js';
 
 export default class BoardPresenter {
   #boardContainer = null;
   #pointsModel = null;
   #boardComponent = new BoardView();
+  #sortComponent = new SortView();
+  #listEmptyComponent = new ListEmptyView();
   #boardPoints = [];
 
   constructor({boardContainer, pointsModel}) {
@@ -21,13 +24,23 @@ export default class BoardPresenter {
     this.#renderBoard();
   }
 
+  #renderListEmpty() {
+    render(this.#listEmptyComponent, this.#boardComponent.element, RenderPosition.AFTERBEGIN);
+  }
+
+  #renderSort() {
+    render(this.#sortComponent, this.#boardComponent.element, RenderPosition.AFTERBEGIN);
+  }
+
   #renderBoard() {
     render(this.#boardComponent, this.#boardContainer);
 
     if (!this.#boardPoints.length) {
-      render(new ListEmptyView, this.#boardComponent.element);
+      this.#renderListEmpty();
       return;
     }
+
+    this.#renderSort();
 
     for (let i = 0; i < this.#boardPoints.length; i++) {
       this.#renderPoint(this.#boardPoints[i]);
