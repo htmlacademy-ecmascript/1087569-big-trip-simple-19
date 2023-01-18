@@ -1,4 +1,5 @@
 import {getRandomArrayElement} from '../utils.js';
+import {nanoid} from 'nanoid';
 
 const TYPES_POINT = ['taxi', 'bus', 'train', 'ship', 'drive', 'flight', 'check-in', 'sightseeing', 'restaurant'];
 const DESCRPTIONS_DESTINATION = [
@@ -75,13 +76,15 @@ const point = {
   dateFrom: '2019-07-10T22:55:56.845Z',
   dateTo: '2019-07-11T11:22:13.375Z',
   destination: destinations[0],
-  id: 0,
   offers: offers.filter((offer) => offersByType.find((item) => item.type === TYPES_POINT[0]).offers.includes(offer.id)),
   type: TYPES_POINT[0]
 };
 
 function getPoint() {
-  return point;
+  return {
+    id: nanoid(),
+    ...point
+  };
 }
 
 export { getPoint, TYPES_POINT };
