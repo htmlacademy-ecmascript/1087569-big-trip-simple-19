@@ -9,10 +9,10 @@ export default class BoardPresenter {
   #boardContainer = null;
   #pointsModel = null;
   #boardComponent = new BoardView();
-  #sortComponent = new SortView();
   #listEmptyComponent = new ListEmptyView();
   #boardPoints = [];
   #pointPresenters = new Map();
+  #sortComponent = null;
 
   constructor({boardContainer, pointsModel}) {
     this.#boardContainer = boardContainer;
@@ -29,6 +29,9 @@ export default class BoardPresenter {
   }
 
   #renderSort() {
+    this.#sortComponent = new SortView({
+      onSortTypeChange: this.#handleSortTypeChange
+    });
     render(this.#sortComponent, this.#boardComponent.element, RenderPosition.AFTERBEGIN);
   }
 
@@ -70,5 +73,9 @@ export default class BoardPresenter {
 
   #handleModeChange = () => {
     this.#pointPresenters.forEach((presenter) => presenter.resetView());
+  };
+
+  #handleSortTypeChange = (sortType) => {
+
   };
 }
