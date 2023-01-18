@@ -36,4 +36,6 @@ const generateFilters = () => Object.entries(filter).map(
   })
 );
 
-export {getRandomArrayElement, formatDatePoint, formatTimePoint, formatDateForm, generateFilters};
+const updateItem = (items, update) => items.map((item) => items.id === update.id ? update : item);
+
+export {getRandomArrayElement, formatDatePoint, formatTimePoint, formatDateForm, generateFilters, updateItem};
