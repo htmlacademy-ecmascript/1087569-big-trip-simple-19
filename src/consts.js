@@ -8,4 +8,9 @@ const FilterType = {
   FUTURE: 'future'
 };
 
-export { Keys, FilterType };
+const Mode = {
+  DEFAULT: 'DEFAULT',
+  EDITING: 'EDITING'
+};
+
+export { Keys, FilterType, Mode };

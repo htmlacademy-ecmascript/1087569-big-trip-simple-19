@@ -1,6 +1,5 @@
 import {render} from './framework/render.js';
 import FilterView from './view/filter-view.js';
-import SortView from './view/sort-view';
 import BoardPresenter from './presenter/board-presenter.js';
 import PointsModel from './model/points-model.js';
 import { generateFilters } from './utils.js';
@@ -15,5 +14,4 @@ const boardPresenter = new BoardPresenter ({
 const filters = generateFilters();
 
 render(new FilterView({filters}), filtersContainer);
-render(new SortView(), sortContainer);
 boardPresenter.init();
