@@ -8,9 +8,11 @@ export default class PointPresenter {
   #pointComponent = null;
   #pointEditComponent = null;
   #point = null;
+  #handleDataChange = null;
 
-  constructor({pointsListContainer}) {
+  constructor({pointsListContainer, onDataChange}) {
     this.#pointsListContainer = pointsListContainer;
+    this.#handleDataChange = onDataChange;
   }
 
   init(point) {
@@ -73,7 +75,8 @@ export default class PointPresenter {
     this.#replacePointToForm();
   };
 
-  #handleFormSubmit = () => {
+  #handleFormSubmit = (point) => {
+    this.#handleDataChange(point);
     this.#replaceFormToPoint();
   };
 
