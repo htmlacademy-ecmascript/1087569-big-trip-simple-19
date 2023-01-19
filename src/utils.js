@@ -38,4 +38,31 @@ const generateFilters = () => Object.entries(filter).map(
 
 const updateItem = (items, update) => items.map((item) => items.id === update.id ? update : item);
 
-export {getRandomArrayElement, formatDatePoint, formatTimePoint, formatDateForm, generateFilters, updateItem};
+const getWeightForNull = (dateA, dateB) => {
+  if (dateA === null && dateB === null) {
+    return 0;
+  }
+
+  if (dateA === null) {
+    return 1;
+  }
+
+  if (dateB === null) {
+    return -1;
+  }
+
+  return null;
+};
+
+const sortPointDateDown = (pointA, pointB) => {
+  const weight = getWeightForNull(pointA.dateFrom, pointB.dateFrom);
+
+  return weight ?? dayjs(pointA.dateFrom).diff(dayjs(pointB.dateFrom));
+};
+
+const sortPointPriceDown = (pointA, pointB) => {
+  const weight = getWeightForNull(pointA.basePrice, pointB.basePrice);
+  return weight ?? pointB.basePrice - pointA.basePrice;
+};
+
+export {getRandomArrayElement, formatDatePoint, formatTimePoint, formatDateForm, generateFilters, updateItem, sortPointDateDown, sortPointPriceDown};
