@@ -13,4 +13,9 @@ const Mode = {
   EDITING: 'EDITING'
 };
 
-export { Keys, FilterType, Mode };
+const SortType = {
+  DAY: 'day',
+  PRICE: 'price'
+};
+
+export { Keys, FilterType, Mode, SortType };

@@ -9,6 +9,14 @@ const DESCRPTIONS_DESTINATION = [
   'Aliquam id orci ut lectus varius viverra.'
 ];
 const CITIES = ['London', 'Paris', 'Madrid', 'Rome'];
+const PRICES = [100, 500, 700, 1100, 1500, 2000];
+const DATES_FROM = [
+  '2019-07-10T22:55:56.845Z',
+  '2019-07-12T22:55:56.845Z',
+  '2019-07-14T22:55:56.845Z',
+  '2019-07-16T22:55:56.845Z',
+  '2019-07-18T22:55:56.845Z'
+];
 const ARRAY_NUMBERS = Array.from({length:10}, (_, i) => ++i);
 
 const offers = [
@@ -72,9 +80,7 @@ const destinations = [
 ];
 
 const point = {
-  basePrice: 1100,
-  dateFrom: '2019-07-10T22:55:56.845Z',
-  dateTo: '2019-07-11T11:22:13.375Z',
+  dateTo: '2019-07-20T11:22:13.375Z',
   destination: destinations[0],
   offers: offers.filter((offer) => offersByType.find((item) => item.type === TYPES_POINT[0]).offers.includes(offer.id)),
   type: TYPES_POINT[0]
@@ -83,6 +89,8 @@ const point = {
 function getPoint() {
   return {
     id: nanoid(),
+    basePrice: getRandomArrayElement(PRICES),
+    dateFrom: getRandomArrayElement(DATES_FROM),
     ...point
   };
 }
