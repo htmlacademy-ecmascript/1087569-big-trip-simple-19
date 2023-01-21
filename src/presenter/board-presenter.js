@@ -1,4 +1,4 @@
-import {render, RenderPosition, remove} from '../framework/render.js';
+import {render, RenderPosition} from '../framework/render.js';
 import BoardView from '../view/board-view.js';
 import ListEmptyView from '../view/list-empty-view.js';
 import SortView from '../view/sort-view.js';
@@ -32,10 +32,9 @@ export default class BoardPresenter {
     render(this.#listEmptyComponent, this.#boardComponent.element, RenderPosition.AFTERBEGIN);
   }
 
-  #renderSort(currentSort) {
+  #renderSort() {
     this.#sortComponent = new SortView({
-      onSortTypeChange: this.#handleSortTypeChange,
-      currentSortType: currentSort
+      onSortTypeChange: this.#handleSortTypeChange
     });
     render(this.#sortComponent, this.#boardComponent.element, RenderPosition.AFTERBEGIN);
   }
@@ -100,8 +99,6 @@ export default class BoardPresenter {
 
     this.#sortPoints(sortType);
     this.#clearPointsList();
-    remove(this.#sortComponent);
-    this.#renderSort(sortType);
     this.#renderPointsList();
   };
 }

@@ -1,11 +1,11 @@
 import AbstractView from '../framework/view/abstract-view.js';
 import {SortType} from '../consts.js';
 
-const createSortTemplate = (type) => (
+const createSortTemplate = () => (
   `<form class="trip-events__trip-sort  trip-sort" action="#" method="get">
       <div class="trip-sort__item  trip-sort__item--day">
-        <input id="sort-day" class="trip-sort__input  visually-hidden" type="radio" name="trip-sort" value="sort-day" ${type === SortType.DAY ? 'checked' : ''}>
-        <label class="trip-sort__btn" for="sort-day" data-sort-type="${SortType.DAY}">Day</label>
+        <input id="sort-day" class="trip-sort__input  visually-hidden" type="radio" name="trip-sort" value="sort-day" data-sort-type="${SortType.DAY}" checked>
+        <label class="trip-sort__btn" for="sort-day">Day</label>
       </div>
 
       <div class="trip-sort__item  trip-sort__item--event">
@@ -19,8 +19,8 @@ const createSortTemplate = (type) => (
       </div>
 
       <div class="trip-sort__item  trip-sort__item--price">
-        <input id="sort-price" class="trip-sort__input  visually-hidden" type="radio" name="trip-sort" value="sort-price" ${type === SortType.PRICE ? 'checked' : ''}>
-        <label class="trip-sort__btn" for="sort-price" data-sort-type="${SortType.PRICE}">Price</label>
+        <input id="sort-price" class="trip-sort__input  visually-hidden" type="radio" name="trip-sort" value="sort-price" data-sort-type="${SortType.PRICE}">
+        <label class="trip-sort__btn" for="sort-price">Price</label>
       </div>
 
       <div class="trip-sort__item  trip-sort__item--offer">
@@ -34,22 +34,18 @@ export default class SortView extends AbstractView {
   #handleSortTypeChange = null;
   #currentSort = null;
 
-  constructor({onSortTypeChange, currentSortType}) {
+  constructor({onSortTypeChange}) {
     super();
     this.#handleSortTypeChange = onSortTypeChange;
-    this.#currentSort = currentSortType;
 
-    this.element.addEventListener('click', this.#sortTypeChangeHandler);
+    this.element.addEventListener('change', this.#sortTypeChangeHandler);
   }
 
   get template() {
-    return createSortTemplate(this.#currentSort);
+    return createSortTemplate();
   }
 
   #sortTypeChangeHandler = (evt) => {
-    if (evt.target.tagName !== 'LABEL') {
-      return;
-    }
     evt.preventDefault();
     this.#handleSortTypeChange(evt.target.dataset.sortType);
   };
