@@ -15,7 +15,12 @@ const Mode = {
 
 const SortType = {
   DAY: 'day',
-  PRICE: 'price'
+  EVENT: 'event',
+  TIME: 'time',
+  PRICE: 'price',
+  OFFERS: 'offers'
 };
 
-export { Keys, FilterType, Mode, SortType };
+const DISABLED_SORT_TYPES = ['event', 'time', 'offers'];
+
+export { Keys, FilterType, Mode, SortType, DISABLED_SORT_TYPES };
