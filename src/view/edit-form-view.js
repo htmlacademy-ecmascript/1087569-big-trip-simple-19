@@ -1,4 +1,4 @@
-import AbstractView from '../framework/view/abstract-view.js';
+import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import {formatDateForm} from '../utils.js';
 import {TYPES_POINT} from '../mock/point.js';
 
@@ -106,9 +106,10 @@ const createEditFormTemplate = (point = BLANK_FORM, showButton) => {
               </label>
               <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${destination.name}" list="destination-list-1">
               <datalist id="destination-list-1">
-                <option value="Amsterdam"></option>
-                <option value="Geneva"></option>
-                <option value="Chamonix"></option>
+                <option value="London"></option>
+                <option value="Paris"></option>
+                <option value="Madrid"></option>
+                <option value="Rome"></option>
               </datalist>
             </div>
 
@@ -151,7 +152,7 @@ const createEditFormTemplate = (point = BLANK_FORM, showButton) => {
   );
 };
 
-export default class EditFormView extends AbstractView {
+export default class EditFormView extends AbstractStatefulView {
   #point = null;
   #handleFormSubmit = null;
   #handleButtonClick = null;
@@ -160,7 +161,7 @@ export default class EditFormView extends AbstractView {
   constructor({point, onFormSubmit, onFormButtonClick}, showButton) {
     super();
     this.#showButton = showButton;
-    this.#point = point;
+    this._setState(EditFormView.parsePointToState(point));
     this.#handleFormSubmit = onFormSubmit;
     this.#handleButtonClick = onFormButtonClick;
 
@@ -172,16 +173,24 @@ export default class EditFormView extends AbstractView {
   }
 
   get template() {
-    return createEditFormTemplate(this.#point, this.#showButton);
+    return createEditFormTemplate(this._state, this.#showButton);
   }
 
   #formSubmitHandler = (evt) => {
     evt.preventDefault();
-    this.#handleFormSubmit(this.#point);
+    this.#handleFormSubmit(EditFormView.parseStateToPoint(this._state));
   };
 
   #formButtonClickHandler = (evt) => {
     evt.preventDefault();
     this.#handleButtonClick();
   };
+
+  static parsePointToState(task) {
+    return {...task};
+  }
+
+  static parseStateToPoint(state) {
+    return {...state};
+  }
 }

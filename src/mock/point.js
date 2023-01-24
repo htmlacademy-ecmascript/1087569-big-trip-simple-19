@@ -46,6 +46,10 @@ const offersByType = [
   {
     type: 'taxi',
     offers: [1, 4]
+  },
+  {
+    type: 'bus',
+    offers: [2, 3]
   }
 ];
 
