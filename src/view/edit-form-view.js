@@ -46,7 +46,7 @@ const createEventListTemplate = (type, types) => (
       ${types.map((name) =>
     `<div class="event__type-item">
         <input id="event-type-${name}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${name}" ${type === name ? 'checked' : ''}>
-          <label class="event__type-label  event__type-label--${name}" for="event-type-${name}-1">${name}</label>
+        <label class="event__type-label  event__type-label--${name}" for="event-type-${name}-1">${name}</label>
       </div>`).join('')}
     </fieldset>
   </div>`
@@ -170,6 +170,12 @@ export default class EditFormView extends AbstractStatefulView {
 
     this.element.querySelector('.event__rollup-btn')
       .addEventListener('click', this.#formButtonClickHandler);
+
+    this.element.querySelector('.event__type-group')
+      .addEventListener('change', this.#eventTypeChangeHandler);
+
+    this.element.querySelector('.event__field-group--destination')
+      .addEventListener('change', this.#eventDestinationChangeHandler);
   }
 
   get template() {
@@ -193,4 +199,18 @@ export default class EditFormView extends AbstractStatefulView {
   static parseStateToPoint(state) {
     return {...state};
   }
+
+  #eventTypeChangeHandler = (evt) => {
+    evt.preventDefault();
+    this.updateElement({
+      type: !this._state.type
+    });
+  };
+
+  #eventDestinationChangeHandler = (evt) => {
+    evt.preventDefault();
+    this.updateElement({
+      destination: !this._state.destination
+    });
+  };
 }
