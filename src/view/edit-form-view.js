@@ -1,6 +1,6 @@
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import {formatDateForm} from '../utils.js';
-import {TYPES_POINT} from '../mock/point.js';
+import {TYPES_POINT, findOffers, findDestination} from '../mock/point.js';
 
 const BLANK_FORM = {
   basePrice: 1500,
@@ -153,7 +153,6 @@ const createEditFormTemplate = (point = BLANK_FORM, showButton) => {
 };
 
 export default class EditFormView extends AbstractStatefulView {
-  #point = null;
   #handleFormSubmit = null;
   #handleButtonClick = null;
   #showButton = null;
@@ -165,15 +164,16 @@ export default class EditFormView extends AbstractStatefulView {
     this.#handleFormSubmit = onFormSubmit;
     this.#handleButtonClick = onFormButtonClick;
 
+    this._restoreHandlers();
+  }
+
+  _restoreHandlers() {
     this.element.querySelector('form')
       .addEventListener('submit', this.#formSubmitHandler);
-
     this.element.querySelector('.event__rollup-btn')
       .addEventListener('click', this.#formButtonClickHandler);
-
     this.element.querySelector('.event__type-group')
       .addEventListener('change', this.#eventTypeChangeHandler);
-
     this.element.querySelector('.event__field-group--destination')
       .addEventListener('change', this.#eventDestinationChangeHandler);
   }
@@ -203,14 +203,15 @@ export default class EditFormView extends AbstractStatefulView {
   #eventTypeChangeHandler = (evt) => {
     evt.preventDefault();
     this.updateElement({
-      type: !this._state.type
+      type: evt.target.value,
+      offers: findOffers(evt.target.value)
     });
   };
 
   #eventDestinationChangeHandler = (evt) => {
     evt.preventDefault();
     this.updateElement({
-      destination: !this._state.destination
+      destination: findDestination(evt.target.value)
     });
   };
 }

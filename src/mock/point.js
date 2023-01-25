@@ -56,8 +56,8 @@ const offersByType = [
 const destinations = [
   {
     id: 1,
-    description: getRandomArrayElement(DESCRPTIONS_DESTINATION),
-    name: getRandomArrayElement(CITIES),
+    description: DESCRPTIONS_DESTINATION[0],
+    name: CITIES[0],
     pictures: [
       {
         src: `https://loremflickr.com/248/152?random=${getRandomArrayElement(ARRAY_NUMBERS)}`,
@@ -80,24 +80,72 @@ const destinations = [
         description: 'Chamonix parliament building'
       }
     ]
+  },
+  {
+    id: 2,
+    description: DESCRPTIONS_DESTINATION[1],
+    name: CITIES[1],
+    pictures: [
+      {
+        src: `https://loremflickr.com/248/152?random=${getRandomArrayElement(ARRAY_NUMBERS)}`,
+        description: 'Chamonix parliament building'
+      },
+      {
+        src: `https://loremflickr.com/248/152?random=${getRandomArrayElement(ARRAY_NUMBERS)}`,
+        description: 'Chamonix parliament building'
+      },
+      {
+        src: `https://loremflickr.com/248/152?random=${getRandomArrayElement(ARRAY_NUMBERS)}`,
+        description: 'Chamonix parliament building'
+      }
+    ]
+  },
+  {
+    id: 3,
+    description: DESCRPTIONS_DESTINATION[2],
+    name: CITIES[2],
+    pictures: [
+      {
+        src: `https://loremflickr.com/248/152?random=${getRandomArrayElement(ARRAY_NUMBERS)}`,
+        description: 'Chamonix parliament building'
+      },
+      {
+        src: `https://loremflickr.com/248/152?random=${getRandomArrayElement(ARRAY_NUMBERS)}`,
+        description: 'Chamonix parliament building'
+      }
+    ]
+  },
+  {
+    id: 4,
+    description: DESCRPTIONS_DESTINATION[3],
+    name: CITIES[3],
+    pictures: [
+      {
+        src: `https://loremflickr.com/248/152?random=${getRandomArrayElement(ARRAY_NUMBERS)}`,
+        description: 'Chamonix parliament building'
+      }
+    ]
   }
 ];
 
 const point = {
   dateTo: '2019-07-20T11:22:13.375Z',
   destination: destinations[0],
-  offers: offers.filter((offer) => offersByType.find((item) => item.type === TYPES_POINT[0]).offers.includes(offer.id)),
   type: TYPES_POINT[0]
 };
+
+const findOffers = (typeOfPoint) => offers.filter((offer) => offersByType.find((item) => item.type === typeOfPoint).offers.includes(offer.id));
+const findDestination = (city) => destinations.find((destination) => destination.name === city);
 
 function getPoint() {
   return {
     id: nanoid(),
     basePrice: getRandomArrayElement(PRICES),
     dateFrom: getRandomArrayElement(DATES_FROM),
+    offers: findOffers(point.type),
     ...point
   };
 }
 
-export { getPoint, TYPES_POINT };
+export { getPoint, TYPES_POINT, findOffers, findDestination };
 
