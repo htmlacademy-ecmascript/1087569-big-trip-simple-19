@@ -52,23 +52,27 @@ const createEventListTemplate = (type, types) => (
   </div>`
 );
 
-const createOffersTemplate = (offers) => (
-  `<section class="event__section  event__section--offers">
-    <h3 class="event__section-title  event__section-title--offers">Offers</h3>
+const createOffersTemplate = (offers) => {
+  if (offers !== null) {
+    return (
+      `<section class="event__section  event__section--offers">
+      <h3 class="event__section-title  event__section-title--offers">Offers</h3>
 
-    <div class="event__available-offers">${offers.map(({ id, title, price }) =>
-    // eslint-disable-next-line indent
-      `<div class="event__offer-selector">
-        <input class="event__offer-checkbox  visually-hidden" id="event-offer-${id}" type="checkbox" name="event-offer-${id}" checked>
-          <label class="event__offer-label" for="event-offer-${id}">
-            <span class="event__offer-title">${title}</span>
-            &plus;&euro;&nbsp;
-            <span class="event__offer-price">${price}</span>
-          </label>
-      </div>`).join('')}
+      <div class="event__available-offers">${offers.map(({ id, title, price }) =>
+        `<div class="event__offer-selector">
+          <input class="event__offer-checkbox  visually-hidden" id="event-offer-${id}" type="checkbox" name="event-offer-${id}" checked>
+            <label class="event__offer-label" for="event-offer-${id}">
+              <span class="event__offer-title">${title}</span>
+              &plus;&euro;&nbsp;
+              <span class="event__offer-price">${price}</span>
+            </label>
+        </div>`).join('')}
     </div>
-  </section>`
-);
+  </section>`);
+  } else {
+    return '';
+  }
+};
 
 const createPhotosTemplate = (photos) => (
   ` <div class="event__photos-container">

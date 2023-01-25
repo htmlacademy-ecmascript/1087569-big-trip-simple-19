@@ -134,7 +134,11 @@ const point = {
   type: TYPES_POINT[0]
 };
 
-const findOffers = (typeOfPoint) => offers.filter((offer) => offersByType.find((item) => item.type === typeOfPoint).offers.includes(offer.id));
+const findOffers = (typeOfPoint) => {
+  //offers.filter((offer) => offersByType.find((item) => item.type === typeOfPoint).offers.includes(offer.id));
+  const foundOffersType = offersByType.find((item) => item.type === typeOfPoint);
+  return foundOffersType ? offers.filter((offer) => foundOffersType.offers.includes(offer.id)) : null;
+};
 const findDestination = (city) => destinations.find((destination) => destination.name === city);
 
 function getPoint() {
