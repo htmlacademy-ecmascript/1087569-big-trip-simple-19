@@ -1,6 +1,6 @@
-import AbstractView from '../framework/view/abstract-view.js';
+import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import {formatDateForm} from '../utils.js';
-import {TYPES_POINT} from '../mock/point.js';
+import {TYPES_POINT, findOffers, findDestination} from '../mock/point.js';
 
 const BLANK_FORM = {
   basePrice: 1500,
@@ -46,29 +46,33 @@ const createEventListTemplate = (type, types) => (
       ${types.map((name) =>
     `<div class="event__type-item">
         <input id="event-type-${name}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${name}" ${type === name ? 'checked' : ''}>
-          <label class="event__type-label  event__type-label--${name}" for="event-type-${name}-1">${name}</label>
+        <label class="event__type-label  event__type-label--${name}" for="event-type-${name}-1">${name}</label>
       </div>`).join('')}
     </fieldset>
   </div>`
 );
 
-const createOffersTemplate = (offers) => (
-  `<section class="event__section  event__section--offers">
-    <h3 class="event__section-title  event__section-title--offers">Offers</h3>
+const createOffersTemplate = (offers) => {
+  if (offers !== null) {
+    return (
+      `<section class="event__section  event__section--offers">
+      <h3 class="event__section-title  event__section-title--offers">Offers</h3>
 
-    <div class="event__available-offers">${offers.map(({ id, title, price }) =>
-    // eslint-disable-next-line indent
-      `<div class="event__offer-selector">
-        <input class="event__offer-checkbox  visually-hidden" id="event-offer-${id}" type="checkbox" name="event-offer-${id}" checked>
-          <label class="event__offer-label" for="event-offer-${id}">
-            <span class="event__offer-title">${title}</span>
-            &plus;&euro;&nbsp;
-            <span class="event__offer-price">${price}</span>
-          </label>
-      </div>`).join('')}
+      <div class="event__available-offers">${offers.map(({ id, title, price }) =>
+        `<div class="event__offer-selector">
+          <input class="event__offer-checkbox  visually-hidden" id="event-offer-${id}" type="checkbox" name="event-offer-${id}" checked>
+            <label class="event__offer-label" for="event-offer-${id}">
+              <span class="event__offer-title">${title}</span>
+              &plus;&euro;&nbsp;
+              <span class="event__offer-price">${price}</span>
+            </label>
+        </div>`).join('')}
     </div>
-  </section>`
-);
+  </section>`);
+  } else {
+    return '';
+  }
+};
 
 const createPhotosTemplate = (photos) => (
   ` <div class="event__photos-container">
@@ -106,9 +110,10 @@ const createEditFormTemplate = (point = BLANK_FORM, showButton) => {
               </label>
               <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${destination.name}" list="destination-list-1">
               <datalist id="destination-list-1">
-                <option value="Amsterdam"></option>
-                <option value="Geneva"></option>
-                <option value="Chamonix"></option>
+                <option value="London"></option>
+                <option value="Paris"></option>
+                <option value="Madrid"></option>
+                <option value="Rome"></option>
               </datalist>
             </div>
 
@@ -151,8 +156,7 @@ const createEditFormTemplate = (point = BLANK_FORM, showButton) => {
   );
 };
 
-export default class EditFormView extends AbstractView {
-  #point = null;
+export default class EditFormView extends AbstractStatefulView {
   #handleFormSubmit = null;
   #handleButtonClick = null;
   #showButton = null;
@@ -160,28 +164,64 @@ export default class EditFormView extends AbstractView {
   constructor({point, onFormSubmit, onFormButtonClick}, showButton) {
     super();
     this.#showButton = showButton;
-    this.#point = point;
+    this._setState(EditFormView.parsePointToState(point));
     this.#handleFormSubmit = onFormSubmit;
     this.#handleButtonClick = onFormButtonClick;
 
+    this._restoreHandlers();
+  }
+
+  _restoreHandlers() {
     this.element.querySelector('form')
       .addEventListener('submit', this.#formSubmitHandler);
-
     this.element.querySelector('.event__rollup-btn')
       .addEventListener('click', this.#formButtonClickHandler);
+    this.element.querySelector('.event__type-group')
+      .addEventListener('change', this.#eventTypeChangeHandler);
+    this.element.querySelector('.event__field-group--destination')
+      .addEventListener('change', this.#eventDestinationChangeHandler);
   }
 
   get template() {
-    return createEditFormTemplate(this.#point, this.#showButton);
+    return createEditFormTemplate(this._state, this.#showButton);
+  }
+
+  reset(point) {
+    this.updateElement(
+      EditFormView.parsePointToState(point)
+    );
   }
 
   #formSubmitHandler = (evt) => {
     evt.preventDefault();
-    this.#handleFormSubmit(this.#point);
+    this.#handleFormSubmit(EditFormView.parseStateToPoint(this._state));
   };
 
   #formButtonClickHandler = (evt) => {
     evt.preventDefault();
     this.#handleButtonClick();
+  };
+
+  static parsePointToState(task) {
+    return {...task};
+  }
+
+  static parseStateToPoint(state) {
+    return {...state};
+  }
+
+  #eventTypeChangeHandler = (evt) => {
+    evt.preventDefault();
+    this.updateElement({
+      type: evt.target.value,
+      offers: findOffers(evt.target.value)
+    });
+  };
+
+  #eventDestinationChangeHandler = (evt) => {
+    evt.preventDefault();
+    this.updateElement({
+      destination: findDestination(evt.target.value)
+    });
   };
 }

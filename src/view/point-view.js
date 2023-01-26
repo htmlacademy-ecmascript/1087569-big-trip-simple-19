@@ -1,16 +1,21 @@
 import AbstractView from '../framework/view/abstract-view.js';
 import {formatDatePoint, formatTimePoint} from '../utils.js';
 
-const createOffersTemplate = (offers) => (
-  `<ul class="event__selected-offers">
-    ${offers.map(({ title, price }) =>
-    `<li class="event__offer">
-        <span class="event__offer-title">${title}</span>
-        &plus;&euro;&nbsp;
-        <span class="event__offer-price">${price}</span>
-    </li>`).join('')}
-  </ul>`
-);
+const createOffersTemplate = (offers) => {
+  if (offers !== null) {
+    return (
+      `<ul class="event__selected-offers">
+      ${offers.map(({ title, price }) =>
+        `<li class="event__offer">
+          <span class="event__offer-title">${title}</span>
+          &plus;&euro;&nbsp;
+          <span class="event__offer-price">${price}</span>
+        </li>`).join('')}
+      </ul>`);
+  } else {
+    return '<ul class="event__selected-offers"></ul>';
+  }
+};
 
 const createPointTemplate = (point) => {
   const { basePrice, dateFrom, dateTo, destination, offers, type } = point;
