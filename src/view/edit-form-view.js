@@ -1,6 +1,9 @@
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import {formatDateForm} from '../utils.js';
 import {TYPES_POINT, findOffers, findDestination} from '../mock/point.js';
+import flatpickr from 'flatpickr';
+
+import 'flatpickr/dist/flatpickr.min.css';
 
 const BLANK_FORM = {
   basePrice: 1500,
