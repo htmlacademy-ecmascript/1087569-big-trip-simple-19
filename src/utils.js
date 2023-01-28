@@ -36,8 +36,6 @@ const generateFilters = () => Object.entries(filter).map(
   })
 );
 
-const updateItem = (items, update) => items.map((item) => items.id === update.id ? update : item);
-
 const getWeightForNull = (dateA, dateB) => {
   if (dateA === null && dateB === null) {
     return 0;
@@ -65,4 +63,4 @@ const sortPointPriceDown = (pointA, pointB) => {
   return weight ?? pointB.basePrice - pointA.basePrice;
 };
 
-export {getRandomArrayElement, formatDatePoint, formatTimePoint, formatDateForm, generateFilters, updateItem, sortPointDateDown, sortPointPriceDown};
+export {getRandomArrayElement, formatDatePoint, formatTimePoint, formatDateForm, generateFilters, sortPointDateDown, sortPointPriceDown};
