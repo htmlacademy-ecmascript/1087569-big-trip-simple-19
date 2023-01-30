@@ -1,4 +1,4 @@
-import {render, RenderPosition} from '../framework/render.js';
+import {render, RenderPosition, remove} from '../framework/render.js';
 import BoardView from '../view/board-view.js';
 import ListEmptyView from '../view/list-empty-view.js';
 import SortView from '../view/sort-view.js';
@@ -40,6 +40,7 @@ export default class BoardPresenter {
 
   #renderSort() {
     this.#sortComponent = new SortView({
+      currentSortType: this.#currentSortType,
       onSortTypeChange: this.#handleSortTypeChange
     });
     render(this.#sortComponent, this.#boardComponent.element, RenderPosition.AFTERBEGIN);
@@ -53,12 +54,21 @@ export default class BoardPresenter {
       return;
     }
 
-    this.#renderSort(SortType.DAY);
-    this.#renderPointsList(this.points);
+    this.#renderSort(this.#currentSortType);
+    this.points.forEach((point) => this.#renderPoint(point));
   }
 
-  #renderPointsList(points) {
-    points.forEach((point) => this.#renderPoint(point));
+
+  #clearBoard({resetSortType = false} = {}) {
+    this.#pointPresenters.forEach((presenter) => presenter.destroy());
+    this.#pointPresenters.clear();
+
+    remove(this.#sortComponent);
+    remove(this.#listEmptyComponent);
+
+    if (resetSortType) {
+      this.#currentSortType = SortType.DAY;
+    }
   }
 
   #renderPoint(point) {
@@ -70,11 +80,6 @@ export default class BoardPresenter {
 
     pointPresenter.init(point);
     this.#pointPresenters.set(point.id, pointPresenter);
-  }
-
-  #clearPointsList() {
-    this.#pointPresenters.forEach((presenter) => presenter.destroy());
-    this.#pointPresenters.clear();
   }
 
   #handleViewAction = (actionType, updateType, update) => {
@@ -92,18 +97,17 @@ export default class BoardPresenter {
   };
 
   #handleModelEvent = (updateType, data) => {
-    console.log(updateType, data);
-    // В зависимости от типа изменений решаем, что делать:
     switch (updateType) {
       case UpdateType.PATCH:
-        // - обновить часть списка (например, когда поменялось описание)
         this.#pointPresenters.get(data.id).init(data);
         break;
       case UpdateType.MINOR:
-        // - обновить список (например, когда задача ушла в архив)
+        this.#clearBoard();
+        this.#renderBoard();
         break;
       case UpdateType.MAJOR:
-        // - обновить всю доску (например, при переключении фильтра)
+        this.#clearBoard({resetSortType: true});
+        this.#renderBoard();
         break;
     }
   };
@@ -114,7 +118,7 @@ export default class BoardPresenter {
 
   #handleSortTypeChange = (sortType) => {
     this.#currentSortType = sortType;
-    this.#clearPointsList();
-    this.#renderPointsList();
+    this.#clearBoard();
+    this.#renderBoard();
   };
 }
