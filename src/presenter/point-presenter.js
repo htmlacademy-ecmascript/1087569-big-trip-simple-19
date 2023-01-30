@@ -30,6 +30,7 @@ export default class PointPresenter {
     });
     this.#pointEditComponent = new EditFormView({
       point: this.#point,
+      onDeleteClick: this.#handleDeleteClick,
       onFormSubmit: this.#handleFormSubmit,
       onFormButtonClick: this.#handleFormButtonClick
     },
@@ -97,6 +98,14 @@ export default class PointPresenter {
     );
 
     this.#replaceFormToPoint();
+  };
+
+  #handleDeleteClick = (point) => {
+    this.#handleDataChange(
+      UserAction.DELETE_POINT,
+      UpdateType.MINOR,
+      point
+    );
   };
 
   #handleFormButtonClick = () => {
