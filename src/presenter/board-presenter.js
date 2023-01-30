@@ -3,6 +3,7 @@ import BoardView from '../view/board-view.js';
 import ListEmptyView from '../view/list-empty-view.js';
 import SortView from '../view/sort-view.js';
 import PointPresenter from './point-presenter.js';
+import NewEventPresenter from './new-event-presenter.js';
 import {sortPointDateDown, sortPointPriceDown, filter} from '../utils.js';
 import {SortType, UpdateType, UserAction, FilterType} from '../consts.js';
 
@@ -13,14 +14,20 @@ export default class BoardPresenter {
   #boardComponent = new BoardView();
   #listEmptyComponent = null;
   #pointPresenters = new Map();
+  #newEventPresenter = null;
   #sortComponent = null;
   #currentSortType = SortType.DAY;
   #filterType = FilterType.EVERYTHING;
 
-  constructor({boardContainer, pointsModel, filterModel}) {
+  constructor({boardContainer, pointsModel, filterModel, onNewEventDestroy}) {
     this.#boardContainer = boardContainer;
     this.#pointsModel = pointsModel;
     this.#filterModel = filterModel;
+    this.#newEventPresenter = new NewEventPresenter({
+      pointsListContainer: this.#boardComponent.element,
+      onDataChange: this.#handleViewAction,
+      onDestroy: onNewEventDestroy
+    });
 
     this.#pointsModel.addObserver(this.#handleModelEvent);
     this.#filterModel.addObserver(this.#handleModelEvent);
@@ -72,6 +79,7 @@ export default class BoardPresenter {
 
 
   #clearBoard({resetSortType = false} = {}) {
+    this.#newEventPresenter.destroy();
     this.#pointPresenters.forEach((presenter) => presenter.destroy());
     this.#pointPresenters.clear();
 
@@ -95,6 +103,12 @@ export default class BoardPresenter {
 
     pointPresenter.init(point);
     this.#pointPresenters.set(point.id, pointPresenter);
+  }
+
+  createEvent() {
+    this.#currentSortType = SortType.DAY;
+    this.#filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
+    this.#newEventPresenter.init();
   }
 
   #handleViewAction = (actionType, updateType, update) => {
@@ -128,6 +142,7 @@ export default class BoardPresenter {
   };
 
   #handleModeChange = () => {
+    this.#newEventPresenter.destroy();
     this.#pointPresenters.forEach((presenter) => presenter.resetView());
   };
 

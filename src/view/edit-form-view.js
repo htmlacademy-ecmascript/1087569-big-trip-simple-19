@@ -9,7 +9,7 @@ const BLANK_FORM = {
   basePrice: 1500,
   dateFrom: '2019-07-10T22:55:56.845Z',
   dateTo: '2019-07-11T11:22:13.375Z',
-  destination: [
+  destination:
     {
       id: 1,
       description: 'Chamonix parliament building',
@@ -24,8 +24,7 @@ const BLANK_FORM = {
           description: 'Chamonix parliament building'
         }
       ]
-    }
-  ],
+    },
   id: 0,
   offers: [
     {
@@ -85,7 +84,7 @@ const createPhotosTemplate = (photos) => (
     </div>`
 );
 
-const createEditFormTemplate = (point = BLANK_FORM, showButton) => {
+const createEditFormTemplate = (point, showButton) => {
   const {basePrice, dateFrom, dateTo, destination, offers, type} = point;
   const offersTemplate = createOffersTemplate(offers);
   const photos = destination.pictures;
@@ -138,7 +137,7 @@ const createEditFormTemplate = (point = BLANK_FORM, showButton) => {
 
             <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
             <button class="event__reset-btn" type="reset">Delete</button>
-            ${showButton ? '<button class="event__rollup-btn" type="button">' : ''}
+            <button class="event__rollup-btn" type="button" ${showButton ? '' : 'style="display: none;"'}">
               <span class="visually-hidden">Open event</span>
             </button>
           </header>
@@ -167,7 +166,7 @@ export default class EditFormView extends AbstractStatefulView {
   #datePickerTo = null;
   #handleDeleteClick = null;
 
-  constructor({point, onFormSubmit, onFormButtonClick, onDeleteClick}, showButton) {
+  constructor({point = BLANK_FORM, onFormSubmit, onFormButtonClick, onDeleteClick}, showButton) {
     super();
     this.#showButton = showButton;
     this._setState(EditFormView.parsePointToState(point));
@@ -258,8 +257,8 @@ export default class EditFormView extends AbstractStatefulView {
     );
   }
 
-  static parsePointToState(task) {
-    return {...task};
+  static parsePointToState(point) {
+    return {...point};
   }
 
   static parseStateToPoint(state) {
