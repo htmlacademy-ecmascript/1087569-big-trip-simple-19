@@ -57,4 +57,4 @@ const sortPointPriceDown = (pointA, pointB) => {
   return weight ?? pointB.basePrice - pointA.basePrice;
 };
 
-export {getRandomArrayElement, formatDatePoint, formatTimePoint, formatDateForm, sortPointDateDown, sortPointPriceDown};
+export {getRandomArrayElement, formatDatePoint, formatTimePoint, formatDateForm, sortPointDateDown, sortPointPriceDown, filter};

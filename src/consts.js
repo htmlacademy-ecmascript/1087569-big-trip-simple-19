@@ -8,7 +8,7 @@ const FilterType = {
   FUTURE: 'future'
 };
 
-const filters = [
+const filterTypes = [
   {
     name: FilterType.EVERYTHING
   },
@@ -44,4 +44,4 @@ const UpdateType = {
   MAJOR: 'MAJOR',
 };
 
-export { Keys, FilterType, Mode, SortType, DISABLED_SORT_TYPES, UserAction, UpdateType, filters };
+export { Keys, FilterType, Mode, SortType, DISABLED_SORT_TYPES, UserAction, UpdateType, filterTypes };
