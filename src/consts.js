@@ -8,6 +8,15 @@ const FilterType = {
   FUTURE: 'future'
 };
 
+const filters = [
+  {
+    name: FilterType.EVERYTHING
+  },
+  {
+    name: FilterType.FUTURE
+  }
+];
+
 const Mode = {
   DEFAULT: 'DEFAULT',
   EDITING: 'EDITING'
@@ -35,4 +44,4 @@ const UpdateType = {
   MAJOR: 'MAJOR',
 };
 
-export { Keys, FilterType, Mode, SortType, DISABLED_SORT_TYPES, UserAction, UpdateType };
+export { Keys, FilterType, Mode, SortType, DISABLED_SORT_TYPES, UserAction, UpdateType, filters };

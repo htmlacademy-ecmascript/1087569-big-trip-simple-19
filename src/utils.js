@@ -30,12 +30,6 @@ const filter = {
   [FilterType.FUTURE]: (points) => points.filter((point) => formatDateFilter(point.dateFrom) >= today)
 };
 
-const generateFilters = () => Object.entries(filter).map(
-  ([filterName]) => ({
-    name: filterName
-  })
-);
-
 const getWeightForNull = (dateA, dateB) => {
   if (dateA === null && dateB === null) {
     return 0;
@@ -63,4 +57,4 @@ const sortPointPriceDown = (pointA, pointB) => {
   return weight ?? pointB.basePrice - pointA.basePrice;
 };
 
-export {getRandomArrayElement, formatDatePoint, formatTimePoint, formatDateForm, generateFilters, sortPointDateDown, sortPointPriceDown};
+export {getRandomArrayElement, formatDatePoint, formatTimePoint, formatDateForm, sortPointDateDown, sortPointPriceDown};
