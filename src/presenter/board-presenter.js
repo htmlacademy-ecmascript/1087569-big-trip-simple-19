@@ -3,31 +3,38 @@ import BoardView from '../view/board-view.js';
 import ListEmptyView from '../view/list-empty-view.js';
 import SortView from '../view/sort-view.js';
 import PointPresenter from './point-presenter.js';
-import {sortPointDateDown, sortPointPriceDown} from '../utils.js';
+import {sortPointDateDown, sortPointPriceDown, filter} from '../utils.js';
 import {SortType, UpdateType, UserAction} from '../consts.js';
 
 export default class BoardPresenter {
   #boardContainer = null;
   #pointsModel = null;
+  #filterModel = null;
   #boardComponent = new BoardView();
   #listEmptyComponent = new ListEmptyView();
   #pointPresenters = new Map();
   #sortComponent = null;
   #currentSortType = SortType.DAY;
 
-  constructor({boardContainer, pointsModel}) {
+  constructor({boardContainer, pointsModel, filterModel}) {
     this.#boardContainer = boardContainer;
     this.#pointsModel = pointsModel;
+    this.#filterModel = filterModel;
 
     this.#pointsModel.addObserver(this.#handleModelEvent);
+    this.#filterModel.addObserver(this.#handleModelEvent);
   }
 
   get points() {
+    const filterType = this.#filterModel.filter;
+    const points = this.#pointsModel.points;
+    const filteredPoints = filter[filterType](points);
+
     if (this.#currentSortType === SortType.PRICE) {
-      return [...this.#pointsModel.points].sort(sortPointPriceDown);
+      return filteredPoints.sort(sortPointPriceDown);
     }
 
-    return this.#pointsModel.points.sort(sortPointDateDown);
+    return filteredPoints.sort(sortPointDateDown);
   }
 
   init() {

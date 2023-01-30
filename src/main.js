@@ -9,7 +9,8 @@ const filterModel = new FilterModel();
 const pointsModel = new PointsModel();
 const boardPresenter = new BoardPresenter ({
   boardContainer: sortContainer,
-  pointsModel
+  pointsModel,
+  filterModel
 });
 const filterPresenter = new FilterPresenter({
   filterContainer: filtersContainer,
