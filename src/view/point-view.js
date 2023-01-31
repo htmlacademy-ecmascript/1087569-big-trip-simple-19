@@ -18,8 +18,9 @@ const createOffersTemplate = (offers) => {
 };
 
 const createPointTemplate = (point) => {
-  const { basePrice, dateFrom, dateTo, destination, offers, type } = point;
-  const offersTemplate = createOffersTemplate(offers);
+  const { basePrice, dateFrom, dateTo, destination, offers, type, checkedOffers } = point;
+  const offersChecked = checkedOffers ? offers.filter((offer) => checkedOffers.includes(offer.id)) : offers;
+  const offersTemplate = createOffersTemplate(offersChecked);
 
   return (
     `<li class="trip-events__item">
