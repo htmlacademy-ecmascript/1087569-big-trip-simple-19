@@ -26,13 +26,7 @@ const BLANK_FORM = {
       ]
     },
   id: 0,
-  offers: [
-    {
-      id: 4,
-      title: 'Add baggage',
-      price: 10
-    }
-  ],
+  offers: [1],
   type: 'taxi'
 };
 
@@ -104,8 +98,8 @@ const createDestinationTemplate = (destination) => {
 };
 
 const createEditFormTemplate = (point, showButton) => {
-  const {basePrice, dateFrom, dateTo, destination, offers, type, checkedOffers} = point;
-  const offersTemplate = createOffersTemplate(offers, checkedOffers);
+  const {basePrice, dateFrom, dateTo, destination, offers, type, allOffersByType} = point;
+  const offersTemplate = createOffersTemplate(allOffersByType, offers);
   const eventListTemplate = createEventListTemplate(type, TYPES_POINT);
   const destinationTemplate = createDestinationTemplate(destination);
 
@@ -200,11 +194,6 @@ export default class EditFormView extends AbstractStatefulView {
       .addEventListener('click', this.#formDeleteClickHandler);
     this.element.querySelector('.event__input--price')
       .addEventListener('change', this.#changePriceHandler);
-
-    if (this._state.offers.length > 0) {
-      this.element.querySelector('.event__available-offers')
-        .addEventListener('change', this.#changeOffersHandler);
-    }
   }
 
   get template() {
@@ -231,18 +220,20 @@ export default class EditFormView extends AbstractStatefulView {
     );
   }
 
-  #changeOffersHandler = (evt) => {
-    const checkedOffers = this._state.checkedOffers;
-    if (checkedOffers.includes(+evt.target.value)) {
-      const indexOfValue = checkedOffers.indexOf(+evt.target.value);
-      checkedOffers.splice(indexOfValue,1);
-    } else {
-      checkedOffers.push(+evt.target.value);
-    }
-  };
-
   #formSubmitHandler = (evt) => {
     evt.preventDefault();
+    if (this._state.allOffersByType.length > 0) {
+      const checkedOffers = [];
+      const offerInputs = Array.from(this.element.querySelectorAll('.event__offer-checkbox'));
+      offerInputs.forEach((item) => {
+        if (item.checked) {
+          checkedOffers.push(+item.value);
+        }
+      });
+      this.updateElement({
+        offers: checkedOffers
+      });
+    }
     this.#handleFormSubmit(EditFormView.parseStateToPoint(this._state));
   };
 
@@ -285,7 +276,7 @@ export default class EditFormView extends AbstractStatefulView {
 
   static parsePointToState(point) {
     return {...point,
-      checkedOffers: [...point.offers.map((offer) => offer.id)]
+      allOffersByType: findOffers(point.type)
     };
   }
 
@@ -297,7 +288,7 @@ export default class EditFormView extends AbstractStatefulView {
     evt.preventDefault();
     this.updateElement({
       type: evt.target.value,
-      offers: findOffers(evt.target.value)
+      allOffersByType: findOffers(evt.target.value)
     });
   };
 

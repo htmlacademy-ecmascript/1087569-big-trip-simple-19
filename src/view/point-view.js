@@ -1,8 +1,9 @@
 import AbstractView from '../framework/view/abstract-view.js';
 import {formatDatePoint, formatTimePoint} from '../utils.js';
+import {findCheckedOffers} from '../mock/point.js';
 
 const createOffersTemplate = (offers) => {
-  if (offers !== null) {
+  if (offers.length > 0) {
     return (
       `<ul class="event__selected-offers">
       ${offers.map(({ title, price }) =>
@@ -18,8 +19,8 @@ const createOffersTemplate = (offers) => {
 };
 
 const createPointTemplate = (point) => {
-  const { basePrice, dateFrom, dateTo, destination, offers, type, checkedOffers } = point;
-  const offersChecked = checkedOffers ? offers.filter((offer) => checkedOffers.includes(offer.id)) : offers;
+  const { basePrice, dateFrom, dateTo, destination, offers, type } = point;
+  const offersChecked = findCheckedOffers(type, offers);
   const offersTemplate = createOffersTemplate(offersChecked);
 
   return (
