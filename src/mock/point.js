@@ -150,5 +150,5 @@ function getPoint() {
   };
 }
 
-export { getPoint, TYPES_POINT, findOffers, findDestination };
+export { getPoint, TYPES_POINT, findOffers, findDestination, CITIES };
 

@@ -57,6 +57,4 @@ const sortPointPriceDown = (pointA, pointB) => {
   return weight ?? pointB.basePrice - pointA.basePrice;
 };
 
-const isDatesEqual = (dateA, dateB) => (dateA === null && dateB === null) || dayjs(dateA).isSame(dateB, 'D');
-
-export {getRandomArrayElement, formatDatePoint, formatTimePoint, formatDateForm, sortPointDateDown, sortPointPriceDown, filter, isDatesEqual};
+export {getRandomArrayElement, formatDatePoint, formatTimePoint, formatDateForm, sortPointDateDown, sortPointPriceDown, filter};

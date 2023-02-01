@@ -1,8 +1,7 @@
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import {formatDateForm} from '../utils.js';
-import {TYPES_POINT, findOffers, findDestination} from '../mock/point.js';
+import {TYPES_POINT, findOffers, findDestination, CITIES} from '../mock/point.js';
 import flatpickr from 'flatpickr';
-import he from 'he';
 
 import 'flatpickr/dist/flatpickr.min.css';
 
@@ -14,7 +13,7 @@ const BLANK_FORM = {
     {
       id: 1,
       description: 'Chamonix parliament building',
-      name: 'Moscow',
+      name: 'Paris',
       pictures: [
         {
           src: 'https://loremflickr.com/248/152?random=1',
@@ -28,6 +27,11 @@ const BLANK_FORM = {
     },
   id: 0,
   offers: [
+    {
+      id: 4,
+      title: 'Add baggage',
+      price: 10
+    }
   ],
   type: 'taxi'
 };
@@ -46,29 +50,30 @@ const createEventListTemplate = (type, types) => (
 );
 
 const createOffersTemplate = (offers, checkedOffers) => {
-  if (offers !== null && offers.length > 0) {
+  if (offers.length > 0) {
     return (
       `<section class="event__section  event__section--offers">
-      <h3 class="event__section-title  event__section-title--offers">Offers</h3>
+        <h3 class="event__section-title  event__section-title--offers">Offers</h3>
 
-      <div class="event__available-offers">${offers.map(({ id, title, price }) =>
-        `<div class="event__offer-selector">
-          <input class="event__offer-checkbox  visually-hidden" id="event-offer-${id}" type="checkbox" name="event-offer-${id}" value=${id} ${checkedOffers.includes(id) ? 'checked' : ''}>
-            <label class="event__offer-label" for="event-offer-${id}">
-              <span class="event__offer-title">${title}</span>
-              &plus;&euro;&nbsp;
-              <span class="event__offer-price">${price}</span>
-            </label>
-        </div>`).join('')}
-    </div>
-  </section>`);
+        <div class="event__available-offers">${offers.map(({ id, title, price }) =>
+        // eslint-disable-next-line indent
+         `<div class="event__offer-selector">
+            <input class="event__offer-checkbox  visually-hidden" id="event-offer-${id}" type="checkbox" name="event-offer-${id}" value=${id} ${checkedOffers.includes(id) ? 'checked' : ''}>
+              <label class="event__offer-label" for="event-offer-${id}">
+                <span class="event__offer-title">${title}</span>
+                  &plus;&euro;&nbsp;
+                <span class="event__offer-price">${price}</span>
+              </label>
+          </div>`).join('')}
+        </div>
+      </section>`);
   } else {
     return '';
   }
 };
 
 const createPhotosTemplate = (photos) => {
-  if (photos !== null) {
+  if (photos.length > 0) {
     return (
       ` <div class="event__photos-container">
           <div class="event__photos-tape">
@@ -84,7 +89,7 @@ const createDestinationTemplate = (destination) => {
   const photos = destination.pictures;
   const description = destination.description;
   const photosTemplate = createPhotosTemplate(photos);
-  if (photos !== null && description !== null) {
+  if (photos.length > 0 && description !== null) {
     return (
       `<section class="event__section  event__section--destination">
         <h3 class="event__section-title  event__section-title--destination">Destination</h3>
@@ -123,12 +128,9 @@ const createEditFormTemplate = (point, showButton) => {
               <label class="event__label  event__type-output" for="event-destination-1">
                 ${type}
               </label>
-              <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${he.encode(destination.name)}" list="destination-list-1">
+              <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${destination.name}" list="destination-list-1">
               <datalist id="destination-list-1">
-                <option value="London"></option>
-                <option value="Paris"></option>
-                <option value="Madrid"></option>
-                <option value="Rome"></option>
+                ${CITIES.map((city) => `<option value="${city}"></option>`).join('')}
               </datalist>
             </div>
 
@@ -196,6 +198,8 @@ export default class EditFormView extends AbstractStatefulView {
     this.#setDatePicker();
     this.element.querySelector('.event__reset-btn')
       .addEventListener('click', this.#formDeleteClickHandler);
+    this.element.querySelector('.event__input--price')
+      .addEventListener('change', this.#changePriceHandler);
 
     if (this._state.offers.length > 0) {
       this.element.querySelector('.event__available-offers')
@@ -287,7 +291,6 @@ export default class EditFormView extends AbstractStatefulView {
 
   static parseStateToPoint(state) {
     return {...state};
-
   }
 
   #eventTypeChangeHandler = (evt) => {
@@ -300,9 +303,15 @@ export default class EditFormView extends AbstractStatefulView {
 
   #eventDestinationChangeHandler = (evt) => {
     evt.preventDefault();
-    this.updateElement({
-      destination: findDestination(evt.target.value)
-    });
+    if (!CITIES.includes(evt.target.value)) {
+      evt.target.setCustomValidity('Введите значение из предложенных');
+    } else {
+      evt.target.setCustomValidity('');
+      this.updateElement({
+        destination: findDestination(evt.target.value)
+      });
+    }
+    evt.target.reportValidity();
   };
 
   #dateFromChangeHandler = ([userDateFrom]) => {
@@ -314,6 +323,12 @@ export default class EditFormView extends AbstractStatefulView {
   #dateToChangeHandler = ([userDateTo]) => {
     this.updateElement({
       dateFrom: userDateTo
+    });
+  };
+
+  #changePriceHandler = (evt) => {
+    this.updateElement({
+      basePrice: evt.target.value
     });
   };
 }
