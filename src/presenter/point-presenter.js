@@ -1,7 +1,7 @@
 import {render, replace, remove} from '../framework/render.js';
 import PointView from '../view/point-view.js';
 import EditFormView from '../view/edit-form-view.js';
-import {Keys, Mode} from '../consts.js';
+import {Keys, Mode, UserAction, UpdateType} from '../consts.js';
 
 export default class PointPresenter {
   #pointsListContainer = null;
@@ -30,6 +30,7 @@ export default class PointPresenter {
     });
     this.#pointEditComponent = new EditFormView({
       point: this.#point,
+      onDeleteClick: this.#handleDeleteClick,
       onFormSubmit: this.#handleFormSubmit,
       onFormButtonClick: this.#handleFormButtonClick
     },
@@ -89,9 +90,22 @@ export default class PointPresenter {
     this.#replacePointToForm();
   };
 
-  #handleFormSubmit = (point) => {
-    this.#handleDataChange(point);
+  #handleFormSubmit = (update) => {
+    this.#handleDataChange(
+      UserAction.UPDATE_POINT,
+      UpdateType.MINOR,
+      update
+    );
+
     this.#replaceFormToPoint();
+  };
+
+  #handleDeleteClick = (point) => {
+    this.#handleDataChange(
+      UserAction.DELETE_POINT,
+      UpdateType.MINOR,
+      point
+    );
   };
 
   #handleFormButtonClick = () => {

@@ -8,6 +8,15 @@ const FilterType = {
   FUTURE: 'future'
 };
 
+const filterTypes = [
+  {
+    name: FilterType.EVERYTHING
+  },
+  {
+    name: FilterType.FUTURE
+  }
+];
+
 const Mode = {
   DEFAULT: 'DEFAULT',
   EDITING: 'EDITING'
@@ -23,4 +32,16 @@ const SortType = {
 
 const DISABLED_SORT_TYPES = ['event', 'time', 'offers'];
 
-export { Keys, FilterType, Mode, SortType, DISABLED_SORT_TYPES };
+const UserAction = {
+  UPDATE_POINT: 'UPDATE_POINT',
+  ADD_POINT: 'ADD_POINT',
+  DELETE_POINT: 'DELETE_POINT',
+};
+
+const UpdateType = {
+  PATCH: 'PATCH',
+  MINOR: 'MINOR',
+  MAJOR: 'MAJOR',
+};
+
+export { Keys, FilterType, Mode, SortType, DISABLED_SORT_TYPES, UserAction, UpdateType, filterTypes };

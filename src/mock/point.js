@@ -19,37 +19,46 @@ const DATES_FROM = [
 ];
 const ARRAY_NUMBERS = Array.from({length:10}, (_, i) => ++i);
 
-const offers = [
-  {
-    id: 1,
-    title: 'Upgrade to a business class',
-    price: 120
-  },
-  {
-    id: 2,
-    title: 'Add something',
-    price: 200
-  },
-  {
-    id: 3,
-    title: 'Buy something',
-    price: 500
-  },
-  {
-    id: 4,
-    title: 'Add baggage',
-    price: 10
-  }
-];
-
 const offersByType = [
   {
     type: 'taxi',
-    offers: [1, 4]
+    offers: [
+      {
+        id: 1,
+        title: 'Upgrade to a business class',
+        price: 120
+      },
+      {
+        id: 2,
+        title: 'Add baggage',
+        price: 10
+      },
+      {
+        id: 3,
+        title: 'Fast driving',
+        price: 70
+      }
+    ]
   },
   {
     type: 'bus',
-    offers: [2, 3]
+    offers: [
+      {
+        id: 1,
+        title: 'Add something',
+        price: 200
+      },
+      {
+        id: 2,
+        title: 'Buy something',
+        price: 500
+      },
+      {
+        id: 3,
+        title: 'Comfortable seat',
+        price: 70
+      }
+    ]
   }
 ];
 
@@ -136,19 +145,24 @@ const point = {
 
 const findOffers = (typeOfPoint) => {
   const foundOffersType = offersByType.find((item) => item.type === typeOfPoint);
-  return foundOffersType ? offers.filter((offer) => foundOffersType.offers.includes(offer.id)) : null;
+  return foundOffersType ? foundOffersType.offers : [];
 };
 const findDestination = (city) => destinations.find((destination) => destination.name === city);
+
+const findCheckedOffers = (typeOfPoint, checkedOffers) => {
+  const foundOffersType = offersByType.find((item) => item.type === typeOfPoint).offers;
+  return foundOffersType.filter((offer) => checkedOffers.includes(offer.id));
+};
 
 function getPoint() {
   return {
     id: nanoid(),
     basePrice: getRandomArrayElement(PRICES),
     dateFrom: getRandomArrayElement(DATES_FROM),
-    offers: findOffers(point.type),
+    offers: [1,2],
     ...point
   };
 }
 
-export { getPoint, TYPES_POINT, findOffers, findDestination };
+export { getPoint, TYPES_POINT, findOffers, findDestination, CITIES, findCheckedOffers };
 
