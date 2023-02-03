@@ -48,10 +48,8 @@ const createOffersTemplate = (offers, checkedOffers) => {
     return (
       `<section class="event__section  event__section--offers">
         <h3 class="event__section-title  event__section-title--offers">Offers</h3>
-
-        <div class="event__available-offers">${offers.map(({ id, title, price }) =>
-        // eslint-disable-next-line indent
-         `<div class="event__offer-selector">
+        <div class="event__available-offers">${offers.map(({ id, title, price }) =>`
+          <div class="event__offer-selector">
             <input class="event__offer-checkbox  visually-hidden" id="event-offer-${id}" type="checkbox" name="event-offer-${id}" value=${id} ${checkedOffers.includes(id) ? 'checked' : ''}>
               <label class="event__offer-label" for="event-offer-${id}">
                 <span class="event__offer-title">${title}</span>
@@ -223,13 +221,7 @@ export default class EditFormView extends AbstractStatefulView {
   #formSubmitHandler = (evt) => {
     evt.preventDefault();
     if (this._state.allOffersByType.length > 0) {
-      const checkedOffers = [];
-      const offerInputs = Array.from(this.element.querySelectorAll('.event__offer-checkbox'));
-      offerInputs.forEach((item) => {
-        if (item.checked) {
-          checkedOffers.push(+item.value);
-        }
-      });
+      const checkedOffers = [...this.element.querySelectorAll('.event__offer-checkbox:checked')].map((item) => +item.value);
       this.updateElement({
         offers: checkedOffers
       });
@@ -253,6 +245,7 @@ export default class EditFormView extends AbstractStatefulView {
       {
         dateFormat: 'j/n/y H:i',
         defaultDate: this._state.dateFrom,
+        maxDate: this._state.dateTo,
         onClose: this.#dateFromChangeHandler,
         enableTime: true,
         // eslint-disable-next-line camelcase
@@ -265,6 +258,7 @@ export default class EditFormView extends AbstractStatefulView {
       {
         dateFormat: 'j/n/y H:i',
         defaultDate: this._state.dateTo,
+        minDate: this._state.dateFrom,
         onClose: this.#dateToChangeHandler,
         enableTime: true,
         // eslint-disable-next-line camelcase
@@ -306,20 +300,14 @@ export default class EditFormView extends AbstractStatefulView {
   };
 
   #dateFromChangeHandler = ([userDateFrom]) => {
-    this.updateElement({
-      dateFrom: userDateFrom
-    });
+    this._state.dateFrom = userDateFrom;
   };
 
   #dateToChangeHandler = ([userDateTo]) => {
-    this.updateElement({
-      dateFrom: userDateTo
-    });
+    this._state.dateTo = userDateTo;
   };
 
   #changePriceHandler = (evt) => {
-    this.updateElement({
-      basePrice: evt.target.value
-    });
+    this._state.basePrice = evt.target.value;
   };
 }
