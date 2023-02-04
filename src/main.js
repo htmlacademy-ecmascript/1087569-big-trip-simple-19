@@ -52,9 +52,11 @@ function handleNewEventButtonClick() {
   newEventButtonComponent.element.disabled = true;
 }
 
-render(newEventButtonComponent, siteHeaderContainer);
 filterPresenter.init();
 boardPresenter.init();
 destinationsModel.init();
 offersModel.init();
-pointsModel.init();
+pointsModel.init()
+  .finally(() => {
+    render(newEventButtonComponent, siteHeaderContainer);
+  });
