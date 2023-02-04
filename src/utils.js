@@ -48,4 +48,33 @@ const sortPointPriceDown = (pointA, pointB) => {
   return weight ?? pointB.basePrice - pointA.basePrice;
 };
 
-export {formatDatePoint, formatTimePoint, formatDateForm, sortPointDateDown, sortPointPriceDown, filter};
+const findDestination = (id, destinations) => destinations.find((destination) => destination.id === id);
+const getDestinationId = (city, destinations) => destinations.find((destination) => destination.name === city).id;
+
+const findCheckedOffers = (typeOfPoint, offersOfType, offersByType) => {
+  const foundOffersType = offersByType.find((item) => item.type === typeOfPoint).offers;
+  return foundOffersType.filter((offer) => offersOfType.includes(offer.id));
+};
+
+const findOffers = (typeOfPoint, offersByType) => {
+  const foundOffersType = offersByType.find((item) => item.type === typeOfPoint);
+  return foundOffersType ? foundOffersType.offers : [];
+};
+
+const getCities = (destinations) => {
+  const cities = [];
+  destinations.map((destination) => cities.push(destination.name));
+  return cities;
+};
+/*const findOffers = (typeOfPoint) => {
+  const foundOffersType = offersByType.find((item) => item.type === typeOfPoint);
+  return foundOffersType ? foundOffersType.offers : [];
+};
+const findDestination = (city) => destinations.find((destination) => destination.name === city);
+
+const findCheckedOffers = (typeOfPoint, checkedOffers) => {
+  const foundOffersType = offersByType.find((item) => item.type === typeOfPoint).offers;
+  return foundOffersType.filter((offer) => checkedOffers.includes(offer.id));
+};*/
+
+export {formatDatePoint, formatTimePoint, formatDateForm, sortPointDateDown, sortPointPriceDown, filter, findDestination, findCheckedOffers, findOffers, getCities, getDestinationId};

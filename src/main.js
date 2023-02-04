@@ -3,6 +3,8 @@ import BoardPresenter from './presenter/board-presenter.js';
 import FilterPresenter from './presenter/filter-presenter.js';
 import PointsModel from './model/points-model.js';
 import FilterModel from './model/filter-model.js';
+import DestinationsModel from './model/destinations-model.js';
+import OffersModel from './model/offers-model.js';
 import NewEventButtonView from './view/new-event-button-view.js';
 import PointsApiService from './api/points-api-service.js';
 
@@ -16,10 +18,18 @@ const filterModel = new FilterModel();
 const pointsModel = new PointsModel({
   pointsApiService: new PointsApiService(END_POINT, AUTHORIZATION)
 });
+const destinationsModel = new DestinationsModel({
+  pointsApiService: new PointsApiService(END_POINT, AUTHORIZATION)
+});
+const offersModel = new OffersModel({
+  pointsApiService: new PointsApiService(END_POINT, AUTHORIZATION)
+});
 const boardPresenter = new BoardPresenter ({
   boardContainer: sortContainer,
   pointsModel,
   filterModel,
+  destinationsModel,
+  offersModel,
   onNewEventDestroy: handleNewEventFormClose
 });
 
@@ -45,4 +55,6 @@ function handleNewEventButtonClick() {
 render(newEventButtonComponent, siteHeaderContainer);
 filterPresenter.init();
 boardPresenter.init();
+destinationsModel.init();
+offersModel.init();
 pointsModel.init();

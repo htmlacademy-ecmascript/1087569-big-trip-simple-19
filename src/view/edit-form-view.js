@@ -1,7 +1,7 @@
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
-import {formatDateForm} from '../utils.js';
-import {TYPES_POINT, findOffers, findDestination, CITIES} from '../mock/point.js';
+import {formatDateForm, findOffers, getDestinationId, findDestination} from '../utils.js';
 import flatpickr from 'flatpickr';
+import { TYPES_POINT } from '../consts.js';
 
 import 'flatpickr/dist/flatpickr.min.css';
 
@@ -9,22 +9,7 @@ const BLANK_FORM = {
   basePrice: 1500,
   dateFrom: '2019-07-10T22:55:56.845Z',
   dateTo: '2019-07-11T11:22:13.375Z',
-  destination:
-    {
-      id: 1,
-      description: 'Chamonix parliament building',
-      name: 'Paris',
-      pictures: [
-        {
-          src: 'https://loremflickr.com/248/152?random=1',
-          description: 'Chamonix parliament building'
-        },
-        {
-          src: 'https://loremflickr.com/248/152?random=2',
-          description: 'Chamonix parliament building'
-        }
-      ]
-    },
+  destination: 1,
   id: 0,
   offers: [1],
   type: 'taxi'
@@ -96,10 +81,11 @@ const createDestinationTemplate = (destination) => {
 };
 
 const createEditFormTemplate = (point, showButton) => {
-  const {basePrice, dateFrom, dateTo, destination, offers, type, allOffersByType} = point;
+  const {basePrice, dateFrom, dateTo, offers, type, destination, destinations, cities, allOffersByType} = point;
+  const destinationOfPoint = findDestination(destination, destinations);
   const offersTemplate = createOffersTemplate(allOffersByType, offers);
   const eventListTemplate = createEventListTemplate(type, TYPES_POINT);
-  const destinationTemplate = createDestinationTemplate(destination);
+  const destinationTemplate = createDestinationTemplate(destinationOfPoint);
 
   return (
     `<li class="trip-events__item">
@@ -120,9 +106,9 @@ const createEditFormTemplate = (point, showButton) => {
               <label class="event__label  event__type-output" for="event-destination-1">
                 ${type}
               </label>
-              <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${destination.name}" list="destination-list-1">
+              <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${destinationOfPoint.name}" list="destination-list-1">
               <datalist id="destination-list-1">
-                ${CITIES.map((city) => `<option value="${city}"></option>`).join('')}
+                ${cities.map((city) => `<option value="${city}"></option>`).join('')}
               </datalist>
             </div>
 
@@ -166,11 +152,17 @@ export default class EditFormView extends AbstractStatefulView {
   #datePickerFrom = null;
   #datePickerTo = null;
   #handleDeleteClick = null;
+  #cities = [];
+  #offersByType = [];
+  #destinations = [];
 
-  constructor({point = BLANK_FORM, onFormSubmit, onFormButtonClick, onDeleteClick}, showButton) {
+  constructor({point = BLANK_FORM, destinations, cities, offersByType, onFormSubmit, onFormButtonClick, onDeleteClick}, showButton) {
     super();
     this.#showButton = showButton;
-    this._setState(EditFormView.parsePointToState(point));
+    this.#cities = cities;
+    this.#destinations = destinations;
+    this.#offersByType = offersByType;
+    this._setState(EditFormView.parsePointToState(point, destinations, cities, offersByType));
     this.#handleFormSubmit = onFormSubmit;
     this.#handleButtonClick = onFormButtonClick;
     this.#handleDeleteClick = onDeleteClick;
@@ -268,9 +260,11 @@ export default class EditFormView extends AbstractStatefulView {
     );
   }
 
-  static parsePointToState(point) {
+  static parsePointToState(point, destinations, cities, offersByType) {
     return {...point,
-      allOffersByType: findOffers(point.type)
+      destinations: destinations,
+      cities: cities,
+      allOffersByType: findOffers(point.type, offersByType)
     };
   }
 
@@ -282,18 +276,18 @@ export default class EditFormView extends AbstractStatefulView {
     evt.preventDefault();
     this.updateElement({
       type: evt.target.value,
-      allOffersByType: findOffers(evt.target.value)
+      allOffersByType: findOffers(evt.target.value, this.#offersByType)
     });
   };
 
   #eventDestinationChangeHandler = (evt) => {
     evt.preventDefault();
-    if (!CITIES.includes(evt.target.value)) {
+    if (!this.#cities.includes(evt.target.value)) {
       evt.target.setCustomValidity('Введите значение из предложенных');
     } else {
       evt.target.setCustomValidity('');
       this.updateElement({
-        destination: findDestination(evt.target.value)
+        destination: getDestinationId(evt.target.value, this.#destinations)
       });
     }
     evt.target.reportValidity();

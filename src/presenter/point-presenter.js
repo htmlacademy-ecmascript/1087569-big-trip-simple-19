@@ -2,12 +2,15 @@ import {render, replace, remove} from '../framework/render.js';
 import PointView from '../view/point-view.js';
 import EditFormView from '../view/edit-form-view.js';
 import {Keys, Mode, UserAction, UpdateType} from '../consts.js';
+import { getCities } from '../utils.js';
 
 export default class PointPresenter {
   #pointsListContainer = null;
   #pointComponent = null;
   #pointEditComponent = null;
   #point = null;
+  #destinations = [];
+  #offers = [];
   #handleDataChange = null;
   #handleModeChange = null;
   #mode = Mode.DEFAULT;
@@ -18,18 +21,26 @@ export default class PointPresenter {
     this.#handleModeChange = onModeChange;
   }
 
-  init(point) {
+  init(point, destinations, offers) {
     this.#point = point;
+    this.#destinations = destinations;
+    this.#offers = offers;
 
     const prevPointComponent = this.#pointComponent;
     const prevPointEditComponent = this.#pointEditComponent;
+    const cities = getCities(this.#destinations);
 
     this.#pointComponent = new PointView({
       point: this.#point,
+      destinations: this.#destinations,
+      offersByType: this.#offers,
       onEditClick: this.#handleEditClick
     });
     this.#pointEditComponent = new EditFormView({
       point: this.#point,
+      destinations: this.#destinations,
+      cities: cities,
+      offersByType: this.#offers,
       onDeleteClick: this.#handleDeleteClick,
       onFormSubmit: this.#handleFormSubmit,
       onFormButtonClick: this.#handleFormButtonClick
