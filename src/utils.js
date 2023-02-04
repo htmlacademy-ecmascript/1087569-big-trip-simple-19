@@ -6,15 +6,6 @@ const TIME_POINT_FORMAT = 'HH:mm';
 const DATE_FORM_FORMAT = 'DD/MM/YY HH:mm';
 const DATE_FILTER_FORMAT = 'YYYYMD';
 
-
-const getRandomNumber = (min, max) => {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-};
-
-const getRandomArrayElement = (arr) => arr[getRandomNumber(0, arr.length - 1)];
-
 const formatDatePoint = (datePoint) => datePoint ? dayjs(datePoint).format(DATE_POINT_FORMAT) : '';
 
 const formatTimePoint = (datePoint) => datePoint ? dayjs(datePoint).format(TIME_POINT_FORMAT) : '';
@@ -57,4 +48,4 @@ const sortPointPriceDown = (pointA, pointB) => {
   return weight ?? pointB.basePrice - pointA.basePrice;
 };
 
-export {getRandomArrayElement, formatDatePoint, formatTimePoint, formatDateForm, sortPointDateDown, sortPointPriceDown, filter};
+export {formatDatePoint, formatTimePoint, formatDateForm, sortPointDateDown, sortPointPriceDown, filter};

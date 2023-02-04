@@ -45,3 +45,4 @@ function handleNewEventButtonClick() {
 render(newEventButtonComponent, siteHeaderContainer);
 filterPresenter.init();
 boardPresenter.init();
+pointsModel.init();
