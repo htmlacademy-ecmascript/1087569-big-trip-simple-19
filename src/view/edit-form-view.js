@@ -10,7 +10,6 @@ const BLANK_FORM = {
   dateFrom: '2019-07-10T22:55:56.845Z',
   dateTo: '2019-07-11T11:22:13.375Z',
   destination: 1,
-  id: 0,
   offers: [1],
   type: 'taxi'
 };
@@ -269,7 +268,13 @@ export default class EditFormView extends AbstractStatefulView {
   }
 
   static parseStateToPoint(state) {
-    return {...state};
+    const point = {...state};
+
+    delete point.allOffersByType;
+    delete point.destinations;
+    delete point.cities;
+
+    return point;
   }
 
   #eventTypeChangeHandler = (evt) => {
@@ -302,6 +307,6 @@ export default class EditFormView extends AbstractStatefulView {
   };
 
   #changePriceHandler = (evt) => {
-    this._state.basePrice = evt.target.value;
+    this._state.basePrice = +evt.target.value;
   };
 }

@@ -133,7 +133,7 @@ export default class BoardPresenter {
   createEvent() {
     this.#currentSortType = SortType.DAY;
     this.#filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
-    this.#newEventPresenter.init();
+    this.#newEventPresenter.init(this.destinations, this.offers);
   }
 
   #handleViewAction = (actionType, updateType, update) => {
