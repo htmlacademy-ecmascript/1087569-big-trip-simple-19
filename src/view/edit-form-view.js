@@ -80,7 +80,19 @@ const createDestinationTemplate = (destination) => {
 };
 
 const createEditFormTemplate = (point, showButton) => {
-  const {basePrice, dateFrom, dateTo, offers, type, destination, destinations, cities, allOffersByType} = point;
+  const {
+    basePrice,
+    dateFrom,
+    dateTo,
+    offers,
+    type,
+    destination,
+    destinations,
+    cities,
+    allOffersByType,
+    isDisabled,
+    isSaving,
+    isDeleting} = point;
   const destinationOfPoint = findDestination(destination, destinations);
   const offersTemplate = createOffersTemplate(allOffersByType, offers);
   const eventListTemplate = createEventListTemplate(type, TYPES_POINT);
@@ -127,8 +139,8 @@ const createEditFormTemplate = (point, showButton) => {
               <input class="event__input  event__input--price" id="event-price-1" type="number" min="0" name="event-price" value="${basePrice}" required>
             </div>
 
-            <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
-            <button class="event__reset-btn" type="reset">Delete</button>
+            <button class="event__save-btn  btn  btn--blue" type="submit" ${isDisabled ? 'disabled' : ''}>${isSaving ? 'Saving...' : 'Save'}</button>
+            <button class="event__reset-btn" type="reset" ${isDisabled ? 'disabled' : ''}>${isDeleting ? 'Deleting...' : 'Delete'}</button>
             <button class="event__rollup-btn" type="button" ${showButton ? '' : 'style="display: none;"'}">
               <span class="visually-hidden">Open event</span>
             </button>
@@ -263,7 +275,10 @@ export default class EditFormView extends AbstractStatefulView {
     return {...point,
       destinations: destinations,
       cities: cities,
-      allOffersByType: findOffers(point.type, offersByType)
+      allOffersByType: findOffers(point.type, offersByType),
+      isDisabled: false,
+      isSaving: false,
+      isDeleting: false
     };
   }
 
@@ -273,6 +288,9 @@ export default class EditFormView extends AbstractStatefulView {
     delete point.allOffersByType;
     delete point.destinations;
     delete point.cities;
+    delete point.isDisabled;
+    delete point.isSaving;
+    delete point.isDeleting;
 
     return point;
   }
