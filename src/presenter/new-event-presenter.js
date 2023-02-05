@@ -2,12 +2,15 @@ import {remove, render, RenderPosition} from '../framework/render.js';
 import EditFormView from '../view/edit-form-view.js';
 import {nanoid} from 'nanoid';
 import {UserAction, UpdateType, Keys} from '../consts.js';
+import { getCities } from '../utils.js';
 
 export default class NewEventPresenter {
   #pointsListContainer = null;
   #handleDataChange = null;
   #handleDestroy = null;
   #pointEditComponent = null;
+  #destinations = [];
+  #offers = [];
 
   constructor({pointsListContainer, onDataChange, onDestroy}) {
     this.#pointsListContainer = pointsListContainer;
@@ -15,12 +18,19 @@ export default class NewEventPresenter {
     this.#handleDestroy = onDestroy;
   }
 
-  init() {
+  init(destinations, offers) {
+    this.#destinations = destinations;
+    this.#offers = offers;
+    const cities = getCities(this.#destinations);
+
     if (this.#pointEditComponent !== null) {
       return;
     }
 
     this.#pointEditComponent = new EditFormView({
+      destinations: this.#destinations,
+      cities: cities,
+      offersByType: this.#offers,
       onFormSubmit: this.#handleFormSubmit,
       onDeleteClick: this.#handleDeleteClick
     },

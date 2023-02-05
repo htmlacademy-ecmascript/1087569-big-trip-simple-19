@@ -6,15 +6,6 @@ const TIME_POINT_FORMAT = 'HH:mm';
 const DATE_FORM_FORMAT = 'DD/MM/YY HH:mm';
 const DATE_FILTER_FORMAT = 'YYYYMD';
 
-
-const getRandomNumber = (min, max) => {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-};
-
-const getRandomArrayElement = (arr) => arr[getRandomNumber(0, arr.length - 1)];
-
 const formatDatePoint = (datePoint) => datePoint ? dayjs(datePoint).format(DATE_POINT_FORMAT) : '';
 
 const formatTimePoint = (datePoint) => datePoint ? dayjs(datePoint).format(TIME_POINT_FORMAT) : '';
@@ -57,4 +48,23 @@ const sortPointPriceDown = (pointA, pointB) => {
   return weight ?? pointB.basePrice - pointA.basePrice;
 };
 
-export {getRandomArrayElement, formatDatePoint, formatTimePoint, formatDateForm, sortPointDateDown, sortPointPriceDown, filter};
+const findDestination = (id, destinations) => destinations.find((destination) => destination.id === id);
+const getDestinationId = (city, destinations) => destinations.find((destination) => destination.name === city).id;
+
+const findCheckedOffers = (typeOfPoint, offersOfType, offersByType) => {
+  const foundOffersType = offersByType.find((item) => item.type === typeOfPoint).offers;
+  return foundOffersType.filter((offer) => offersOfType.includes(offer.id));
+};
+
+const findOffers = (typeOfPoint, offersByType) => {
+  const foundOffersType = offersByType.find((item) => item.type === typeOfPoint);
+  return foundOffersType ? foundOffersType.offers : [];
+};
+
+const getCities = (destinations) => {
+  const cities = [];
+  destinations.map((destination) => cities.push(destination.name));
+  return cities;
+};
+
+export {formatDatePoint, formatTimePoint, formatDateForm, sortPointDateDown, sortPointPriceDown, filter, findDestination, findCheckedOffers, findOffers, getCities, getDestinationId};
