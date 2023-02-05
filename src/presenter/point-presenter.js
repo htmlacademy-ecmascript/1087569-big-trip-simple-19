@@ -2,7 +2,7 @@ import {render, replace, remove} from '../framework/render.js';
 import PointView from '../view/point-view.js';
 import EditFormView from '../view/edit-form-view.js';
 import {Keys, Mode, UserAction, UpdateType} from '../consts.js';
-import { getCities } from '../utils.js';
+import {getCities} from '../utils.js';
 
 export default class PointPresenter {
   #pointsListContainer = null;

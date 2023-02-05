@@ -47,4 +47,4 @@ const UpdateType = {
 
 const TYPES_POINT = ['taxi', 'bus', 'train', 'ship', 'drive', 'flight', 'check-in', 'sightseeing', 'restaurant'];
 
-export { Keys, FilterType, Mode, SortType, DISABLED_SORT_TYPES, UserAction, UpdateType, filterTypes, TYPES_POINT };
+export {Keys, FilterType, Mode, SortType, DISABLED_SORT_TYPES, UserAction, UpdateType, filterTypes, TYPES_POINT};

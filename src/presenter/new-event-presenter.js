@@ -2,7 +2,7 @@ import {remove, render, RenderPosition} from '../framework/render.js';
 import EditFormView from '../view/edit-form-view.js';
 import {nanoid} from 'nanoid';
 import {UserAction, UpdateType, Keys} from '../consts.js';
-import { getCities } from '../utils.js';
+import {getCities} from '../utils.js';
 
 export default class NewEventPresenter {
   #pointsListContainer = null;

@@ -1,7 +1,7 @@
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import {formatDateForm, findOffers, getDestinationId, findDestination} from '../utils.js';
 import flatpickr from 'flatpickr';
-import { TYPES_POINT } from '../consts.js';
+import {TYPES_POINT} from '../consts.js';
 
 import 'flatpickr/dist/flatpickr.min.css';
 
@@ -205,7 +205,7 @@ export default class EditFormView extends AbstractStatefulView {
 
   reset(point) {
     this.updateElement(
-      EditFormView.parsePointToState(point)
+      EditFormView.parsePointToState(point, this.#destinations, this.#cities, this.#offersByType)
     );
   }
 
