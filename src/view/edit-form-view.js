@@ -7,8 +7,8 @@ import 'flatpickr/dist/flatpickr.min.css';
 
 const BLANK_FORM = {
   basePrice: 1500,
-  dateFrom: new Date('2019-07-10T22:55:56.845Z'),
-  dateTo: new Date('2019-07-11T11:22:13.375Z'),
+  dateFrom: new Date(),
+  dateTo: new Date(),
   destination: 1,
   offers: [],
   type: 'taxi'
