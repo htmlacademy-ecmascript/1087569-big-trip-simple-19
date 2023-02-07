@@ -317,11 +317,15 @@ export default class EditFormView extends AbstractStatefulView {
   };
 
   #dateFromChangeHandler = ([userDateFrom]) => {
-    this._state.dateFrom = userDateFrom;
+    this.updateElement({
+      dateFrom: userDateFrom
+    });
   };
 
   #dateToChangeHandler = ([userDateTo]) => {
-    this._state.dateTo = userDateTo;
+    this.updateElement({
+      dateTo: userDateTo
+    });
   };
 
   #changePriceHandler = (evt) => {
