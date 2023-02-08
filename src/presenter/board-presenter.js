@@ -1,4 +1,4 @@
-import {render, RenderPosition, remove} from '../framework/render.js';
+import { render, RenderPosition, remove } from '../framework/render.js';
 import UiBlocker from '../framework/ui-blocker/ui-blocker.js';
 import BoardView from '../view/board-view.js';
 import ListEmptyView from '../view/list-empty-view.js';
@@ -6,8 +6,8 @@ import SortView from '../view/sort-view.js';
 import LoadingView from '../view/loading-view.js';
 import PointPresenter from './point-presenter.js';
 import NewEventPresenter from './new-event-presenter.js';
-import {sortPointDateDown, sortPointPriceDown, filter} from '../utils.js';
-import {SortType, UpdateType, UserAction, FilterType, TimeLimit} from '../consts.js';
+import { sortPointDateDown, sortPointPriceDown, filter } from '../utils.js';
+import { SortType, UpdateType, UserAction, FilterType, TimeLimit } from '../consts.js';
 
 export default class BoardPresenter {
   #boardContainer = null;
@@ -67,6 +67,12 @@ export default class BoardPresenter {
 
   init() {
     this.#renderBoard();
+  }
+
+  createEvent() {
+    this.#currentSortType = SortType.DAY;
+    this.#filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
+    this.#newEventPresenter.init(this.destinations, this.offers);
   }
 
   #renderListEmpty() {
@@ -133,12 +139,6 @@ export default class BoardPresenter {
 
   #renderLoading() {
     render(this.#loadingComponent, this.#boardContainer, RenderPosition.AFTERBEGIN);
-  }
-
-  createEvent() {
-    this.#currentSortType = SortType.DAY;
-    this.#filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
-    this.#newEventPresenter.init(this.destinations, this.offers);
   }
 
   #handleViewAction = async (actionType, updateType, update) => {

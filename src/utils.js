@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import {FilterType} from './consts.js';
+import { FilterType } from './consts.js';
 
 const DATE_POINT_FORMAT = 'MMM DD';
 const TIME_POINT_FORMAT = 'HH:mm';
@@ -14,11 +14,11 @@ const formatDateForm = (datePoint) => datePoint ? dayjs(datePoint).format(DATE_F
 
 const formatDateFilter = (datePoint) => datePoint ? dayjs(datePoint).format(DATE_FILTER_FORMAT) : '';
 
-const today = formatDateFilter(dayjs());
+const today = +formatDateFilter(dayjs());
 
 const filter = {
   [FilterType.EVERYTHING]: (points) => points,
-  [FilterType.FUTURE]: (points) => points.filter((point) => formatDateFilter(point.dateFrom) >= today)
+  [FilterType.FUTURE]: (points) => points.filter((point) => +formatDateFilter(point.dateFrom) >= today)
 };
 
 const getWeightForNull = (dataA, dataB) => {
@@ -63,4 +63,4 @@ const findOffers = (typeOfPoint, offersByType) => {
 
 const getCities = (destinations) => destinations.map((destination) => destination.name);
 
-export {formatDatePoint, formatTimePoint, formatDateForm, sortPointDateDown, sortPointPriceDown, filter, findDestination, findCheckedOffers, findOffers, getCities, getDestinationId};
+export { formatDatePoint, formatTimePoint, formatDateForm, sortPointDateDown, sortPointPriceDown, filter, findDestination, findCheckedOffers, findOffers, getCities, getDestinationId };

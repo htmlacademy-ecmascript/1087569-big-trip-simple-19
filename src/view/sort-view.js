@@ -1,5 +1,5 @@
 import AbstractView from '../framework/view/abstract-view.js';
-import {SortType, DISABLED_SORT_TYPES} from '../consts.js';
+import { SortType, DISABLED_SORT_TYPES } from '../consts.js';
 
 const createSortItemTemplate = (sortItem, isChecked) => {
   const isDisabled = DISABLED_SORT_TYPES.includes(sortItem);

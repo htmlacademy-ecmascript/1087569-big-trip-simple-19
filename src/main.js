@@ -1,4 +1,4 @@
-import {render} from './framework/render.js';
+import { render } from './framework/render.js';
 import BoardPresenter from './presenter/board-presenter.js';
 import FilterPresenter from './presenter/filter-presenter.js';
 import PointsModel from './model/points-model.js';
@@ -52,11 +52,13 @@ function handleNewEventButtonClick() {
   newEventButtonComponent.element.disabled = true;
 }
 
+Promise.all([
+  offersModel.init(),
+  destinationsModel.init(),
+  pointsModel.init()
+]).finally(() => {
+  render(newEventButtonComponent, siteHeaderContainer);
+});
 filterPresenter.init();
 boardPresenter.init();
-destinationsModel.init();
-offersModel.init();
-pointsModel.init()
-  .finally(() => {
-    render(newEventButtonComponent, siteHeaderContainer);
-  });
+
