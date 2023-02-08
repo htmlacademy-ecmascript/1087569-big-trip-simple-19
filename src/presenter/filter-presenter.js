@@ -18,16 +18,11 @@ export default class FilterPresenter {
     this.#filterModel.addObserver(this.#handleModelEvent);
   }
 
-  get filters() {
-    return filterTypes;
-  }
-
   init() {
-    const filters = this.filters;
     const prevFilterComponent = this.#filterComponent;
 
     this.#filterComponent = new FilterView({
-      filters,
+      filters: filterTypes,
       currentFilterType: this.#filterModel.filter,
       onFilterTypeChange: this.#handleFilterTypeChange,
       isDisabled: this.#checkDisabled()

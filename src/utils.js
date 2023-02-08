@@ -14,11 +14,11 @@ const formatDateForm = (datePoint) => datePoint ? dayjs(datePoint).format(DATE_F
 
 const formatDateFilter = (datePoint) => datePoint ? dayjs(datePoint).format(DATE_FILTER_FORMAT) : '';
 
-const today = formatDateFilter(dayjs());
+const today = +formatDateFilter(dayjs());
 
 const filter = {
   [FilterType.EVERYTHING]: (points) => points,
-  [FilterType.FUTURE]: (points) => points.filter((point) => formatDateFilter(point.dateFrom) >= today)
+  [FilterType.FUTURE]: (points) => points.filter((point) => +formatDateFilter(point.dateFrom) >= today)
 };
 
 const getWeightForNull = (dataA, dataB) => {
