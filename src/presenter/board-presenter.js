@@ -69,6 +69,12 @@ export default class BoardPresenter {
     this.#renderBoard();
   }
 
+  createEvent() {
+    this.#currentSortType = SortType.DAY;
+    this.#filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
+    this.#newEventPresenter.init(this.destinations, this.offers);
+  }
+
   #renderListEmpty() {
     this.#listEmptyComponent = new ListEmptyView({
       filterType: this.#filterType
@@ -133,12 +139,6 @@ export default class BoardPresenter {
 
   #renderLoading() {
     render(this.#loadingComponent, this.#boardContainer, RenderPosition.AFTERBEGIN);
-  }
-
-  createEvent() {
-    this.#currentSortType = SortType.DAY;
-    this.#filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
-    this.#newEventPresenter.init(this.destinations, this.offers);
   }
 
   #handleViewAction = async (actionType, updateType, update) => {

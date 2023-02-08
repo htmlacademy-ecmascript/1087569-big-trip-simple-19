@@ -181,6 +181,10 @@ export default class EditFormView extends AbstractStatefulView {
     this._restoreHandlers();
   }
 
+  get template() {
+    return createEditFormTemplate(this._state, this.#showButton);
+  }
+
   _restoreHandlers() {
     this.element.querySelector('form')
       .addEventListener('submit', this.#formSubmitHandler);
@@ -195,10 +199,6 @@ export default class EditFormView extends AbstractStatefulView {
       .addEventListener('click', this.#formDeleteClickHandler);
     this.element.querySelector('.event__input--price')
       .addEventListener('change', this.#changePriceHandler);
-  }
-
-  get template() {
-    return createEditFormTemplate(this._state, this.#showButton);
   }
 
   removeElement() {
@@ -220,27 +220,6 @@ export default class EditFormView extends AbstractStatefulView {
       EditFormView.parsePointToState(point, this.#destinations, this.#cities, this.#offersByType)
     );
   }
-
-  #formSubmitHandler = (evt) => {
-    evt.preventDefault();
-    if (this._state.allOffersByType.length > 0) {
-      const checkedOffers = [...this.element.querySelectorAll('.event__offer-checkbox:checked')].map((item) => +item.value);
-      this.updateElement({
-        offers: checkedOffers
-      });
-    }
-    this.#handleFormSubmit(EditFormView.parseStateToPoint(this._state));
-  };
-
-  #formButtonClickHandler = (evt) => {
-    evt.preventDefault();
-    this.#handleButtonClick();
-  };
-
-  #formDeleteClickHandler = (evt) => {
-    evt.preventDefault();
-    this.#handleDeleteClick(EditFormView.parseStateToPoint(this._state));
-  };
 
   #setDatePicker() {
     this.#datePickerFrom = flatpickr(
@@ -271,29 +250,26 @@ export default class EditFormView extends AbstractStatefulView {
     );
   }
 
-  static parsePointToState(point, destinations, cities, offersByType) {
-    return {...point,
-      destinations: destinations,
-      cities: cities,
-      allOffersByType: findOffers(point.type, offersByType),
-      isDisabled: false,
-      isSaving: false,
-      isDeleting: false
-    };
-  }
+  #formSubmitHandler = (evt) => {
+    evt.preventDefault();
+    if (this._state.allOffersByType.length > 0) {
+      const checkedOffers = [...this.element.querySelectorAll('.event__offer-checkbox:checked')].map((item) => +item.value);
+      this.updateElement({
+        offers: checkedOffers
+      });
+    }
+    this.#handleFormSubmit(EditFormView.parseStateToPoint(this._state));
+  };
 
-  static parseStateToPoint(state) {
-    const point = {...state};
+  #formButtonClickHandler = (evt) => {
+    evt.preventDefault();
+    this.#handleButtonClick();
+  };
 
-    delete point.allOffersByType;
-    delete point.destinations;
-    delete point.cities;
-    delete point.isDisabled;
-    delete point.isSaving;
-    delete point.isDeleting;
-
-    return point;
-  }
+  #formDeleteClickHandler = (evt) => {
+    evt.preventDefault();
+    this.#handleDeleteClick(EditFormView.parseStateToPoint(this._state));
+  };
 
   #eventTypeChangeHandler = (evt) => {
     evt.preventDefault();
@@ -331,4 +307,28 @@ export default class EditFormView extends AbstractStatefulView {
   #changePriceHandler = (evt) => {
     this._state.basePrice = +evt.target.value;
   };
+
+  static parsePointToState(point, destinations, cities, offersByType) {
+    return {...point,
+      destinations: destinations,
+      cities: cities,
+      allOffersByType: findOffers(point.type, offersByType),
+      isDisabled: false,
+      isSaving: false,
+      isDeleting: false
+    };
+  }
+
+  static parseStateToPoint(state) {
+    const point = {...state};
+
+    delete point.allOffersByType;
+    delete point.destinations;
+    delete point.cities;
+    delete point.isDisabled;
+    delete point.isSaving;
+    delete point.isDeleting;
+
+    return point;
+  }
 }
