@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import {FilterType} from './consts.js';
+import { FilterType } from './consts.js';
 
 const DATE_POINT_FORMAT = 'MMM DD';
 const TIME_POINT_FORMAT = 'HH:mm';
@@ -63,4 +63,4 @@ const findOffers = (typeOfPoint, offersByType) => {
 
 const getCities = (destinations) => destinations.map((destination) => destination.name);
 
-export {formatDatePoint, formatTimePoint, formatDateForm, sortPointDateDown, sortPointPriceDown, filter, findDestination, findCheckedOffers, findOffers, getCities, getDestinationId};
+export { formatDatePoint, formatTimePoint, formatDateForm, sortPointDateDown, sortPointPriceDown, filter, findDestination, findCheckedOffers, findOffers, getCities, getDestinationId };

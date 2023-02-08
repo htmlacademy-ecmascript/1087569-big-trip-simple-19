@@ -1,5 +1,5 @@
 import AbstractView from '../framework/view/abstract-view.js';
-import {formatDatePoint, formatTimePoint, findCheckedOffers, findDestination} from '../utils.js';
+import { formatDatePoint, formatTimePoint, findCheckedOffers, findDestination } from '../utils.js';
 
 const createOffersTemplate = (offers) => {
   if (offers.length > 0) {

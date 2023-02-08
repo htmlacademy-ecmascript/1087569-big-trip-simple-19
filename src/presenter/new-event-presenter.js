@@ -1,7 +1,7 @@
-import {remove, render, RenderPosition} from '../framework/render.js';
+import { remove, render, RenderPosition } from '../framework/render.js';
 import EditFormView from '../view/edit-form-view.js';
-import {UserAction, UpdateType, Keys} from '../consts.js';
-import {getCities} from '../utils.js';
+import { UserAction, UpdateType, Keys } from '../consts.js';
+import { getCities } from '../utils.js';
 
 export default class NewEventPresenter {
   #pointsListContainer = null;
