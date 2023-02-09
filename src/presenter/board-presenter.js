@@ -42,6 +42,7 @@ export default class BoardPresenter {
     });
 
     this.#pointsModel.addObserver(this.#handleModelEvent);
+    this.#destinationsModel.addObserver(this.#handleModelEvent);
     this.#filterModel.addObserver(this.#handleModelEvent);
   }
 
@@ -75,12 +76,15 @@ export default class BoardPresenter {
     this.#newEventPresenter.init(this.destinations, this.offers);
   }
 
-  #renderListEmpty() {
-    this.#listEmptyComponent = new ListEmptyView({
-      filterType: this.#filterType
-    });
+  #renderListEmpty(error = false) {
+    if (!this.#listEmptyComponent) {
+      this.#listEmptyComponent = new ListEmptyView({
+        filterType: this.#filterType,
+        isError: error
+      });
 
-    render(this.#listEmptyComponent, this.#boardComponent.element, RenderPosition.AFTERBEGIN);
+      render(this.#listEmptyComponent, this.#boardComponent.element, RenderPosition.AFTERBEGIN);
+    }
   }
 
   #renderSort() {
@@ -191,6 +195,11 @@ export default class BoardPresenter {
         this.#isLoading = false;
         remove(this.#loadingComponent);
         this.#renderBoard();
+        break;
+      case UpdateType.ERROR:
+        this.#isLoading = false;
+        remove(this.#loadingComponent);
+        this.#renderListEmpty(true);
         break;
     }
   };

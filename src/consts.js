@@ -33,7 +33,8 @@ const UpdateType = {
   PATCH: 'PATCH',
   MINOR: 'MINOR',
   MAJOR: 'MAJOR',
-  INIT: 'INIT'
+  INIT: 'INIT',
+  ERROR: 'ERROR'
 };
 
 const TYPES_POINT = ['taxi', 'bus', 'train', 'ship', 'drive', 'flight', 'check-in', 'sightseeing', 'restaurant'];
@@ -43,4 +44,11 @@ const TimeLimit = {
   UPPER_LIMIT: 1000,
 };
 
-export { Keys, FilterType, Mode, SortType, DISABLED_SORT_TYPES, UserAction, UpdateType, TYPES_POINT, TimeLimit };
+const DateFormats = {
+  DATE_POINT : 'MMM DD',
+  TIME_POINT : 'HH:mm',
+  DATE_FORM : 'DD/MM/YY HH:mm',
+  DATE_FILTER : 'YYYYMD'
+};
+
+export { Keys, FilterType, Mode, SortType, DISABLED_SORT_TYPES, UserAction, UpdateType, TYPES_POINT, TimeLimit, DateFormats };
