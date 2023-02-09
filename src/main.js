@@ -56,7 +56,9 @@ Promise.all([
   offersModel.init(),
   destinationsModel.init(),
   pointsModel.init()
-]).finally(() => {
+]).catch(() => {
+  newEventButtonComponent.element.disabled = true;
+}).finally(() => {
   render(newEventButtonComponent, siteHeaderContainer);
 });
 filterPresenter.init();

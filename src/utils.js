@@ -1,18 +1,13 @@
 import dayjs from 'dayjs';
-import { FilterType } from './consts.js';
+import { FilterType, DateFormats } from './consts.js';
 
-const DATE_POINT_FORMAT = 'MMM DD';
-const TIME_POINT_FORMAT = 'HH:mm';
-const DATE_FORM_FORMAT = 'DD/MM/YY HH:mm';
-const DATE_FILTER_FORMAT = 'YYYYMD';
+const formatDatePoint = (datePoint) => datePoint ? dayjs(datePoint).format(DateFormats.DATE_POINT) : '';
 
-const formatDatePoint = (datePoint) => datePoint ? dayjs(datePoint).format(DATE_POINT_FORMAT) : '';
+const formatTimePoint = (datePoint) => datePoint ? dayjs(datePoint).format(DateFormats.TIME_POINT) : '';
 
-const formatTimePoint = (datePoint) => datePoint ? dayjs(datePoint).format(TIME_POINT_FORMAT) : '';
+const formatDateForm = (datePoint) => datePoint ? dayjs(datePoint).format(DateFormats.DATE_FORM) : '';
 
-const formatDateForm = (datePoint) => datePoint ? dayjs(datePoint).format(DATE_FORM_FORMAT) : '';
-
-const formatDateFilter = (datePoint) => datePoint ? dayjs(datePoint).format(DATE_FILTER_FORMAT) : '';
+const formatDateFilter = (datePoint) => datePoint ? dayjs(datePoint).format(DateFormats.DATE_FILTER) : '';
 
 const today = +formatDateFilter(dayjs());
 
